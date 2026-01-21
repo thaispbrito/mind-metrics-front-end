@@ -1,1 +1,82 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/goals`;
+
+// Fetch goals
+const index = async () => {
+    try {
+        const res = await fetch(BASE_URL, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Fetch a single goal
+const show = async (goalId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${goalId}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Create a goal
+const create = async (goalFormData) => {
+    try {
+        const res = await fetch(`${BASE_URL}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(goalFormData),
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Delete a goal
+const deleteGoal = async (goalId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${goalId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Update a goal
+const updateGoal = async (goalId, goalFormData) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${goalId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(goalFormData),
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export {
+    index,
+    show,
+    create,
+    deleteGoal,
+    updateGoal,
+};
