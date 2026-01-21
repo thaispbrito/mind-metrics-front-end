@@ -17,8 +17,6 @@ import * as dailyLogService from './services/dailyLogService';
 import * as goalService from './services/goalService';
 
 
-
-
 const App = () => {
 
   const { user } = useContext(UserContext);
