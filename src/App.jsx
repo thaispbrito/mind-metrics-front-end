@@ -11,7 +11,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 // import DailyLogDetails from './components/DailyLogDetails/DailyLogDetails';
 // import DailyLogForm from './components/DailyLogForm/DailyLogForm';
 import GoalList from './components/GoalList/GoalList';
-// import GoalDetails from './components/GoalDetails/GoalDetails';
+import GoalDetails from './components/GoalDetails/GoalDetails';
 // import GoalForm from './components/GoalForm/GoalForm';
 // import * as dailyLogService from './services/dailyLogService';
 import * as goalService from './services/goalService';
@@ -31,7 +31,6 @@ const App = () => {
     fetchGoals();
   }, [user]);
 
-console.log(goals);
 
   return (
     <>
@@ -41,7 +40,10 @@ console.log(goals);
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path="/sign-in" element={<SignInForm />} />
 
-        <Route path='/goals' element={<GoalList goals={goals} />} />
+
+        <Route path='/goals' element={<GoalList goals={goals} />} /> 
+        <Route path="/goals/:goalId" element={<GoalDetails handleDeleteGoal={handleDeleteGoal} />} />
+
       </Routes>
     </>
   );
