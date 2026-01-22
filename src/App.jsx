@@ -31,6 +31,7 @@ const App = () => {
     fetchGoals();
   }, [user]);
 
+console.log(goals);
 
   return (
     <>
