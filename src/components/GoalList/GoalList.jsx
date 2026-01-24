@@ -10,7 +10,7 @@ const GoalList = ({ goals = [] }) => {
       <h2>Goal List</h2>
 
       {goals.length === 0 ? (
-        <p>You dont have goals yet</p>
+        <p>You don't have goals yet</p>
       ) : (
         goals.map((goal) => (
           <article key={goal._id}>
