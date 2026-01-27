@@ -1,10 +1,7 @@
-import { useEffect, useContext, useState } from 'react'; // useEffect is useful when getting information from database
+// useEffect is useful when getting information from database
+import { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
-import * as dailyLogService from '../../services/dailyLogService';
-import * as goalService from '../../services/goalService';
-
-// Import chart components
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import * as userService from '../../services/userService';
 
 const goalRules = {
     sleepHours: "gte",
@@ -30,30 +27,18 @@ const goalRules = {
 
 const Dashboard = () => {
     const { user } = useContext(UserContext);
-    const [logs, setLogs] = useState([]);
-    const [goals, setGoals] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [period, setPeriod] = useState(7); // dafault period: last 7 days
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUsers = async () => {
             try {
-                // Use Promise.all to fetch multiple pieces of data at once
-                const [logData, goalData] = await Promise.all([
-                    dailyLogService.index(),
-                    goalService.index(),
-                ]);
-
-                setLogs(logData);
-                setGoals(goalData);
+                const fetchedUsers = await userService.index();
+                setUsers(fetchedUsers);
             } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
+                console.log(err)
             }
-        };
-
-        if (user) fetchData();
+        }
+        if (user) fetchUsers();
     }, [user]);
 
     if (!user) return null;
@@ -235,4 +220,8 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+
+
 
