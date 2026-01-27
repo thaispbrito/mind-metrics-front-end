@@ -1,170 +1,79 @@
-import { useContext, useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router";
-import { UserContext } from "./contexts/UserContext";
+import { useContext, useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router';
+import { UserContext } from './contexts/UserContext';
 
-import NavBar from "./components/NavBar/NavBar";
-import SignUpForm from "./components/SignUpForm/SignUpForm";
-import SignInForm from "./components/SignInForm/SignInForm";
-import Landing from "./components/Landing/Landing";
-import Dashboard from "./components/Dashboard/Dashboard";
+import NavBar from './components/NavBar/NavBar';
+import SignUpForm from './components/SignUpForm/SignUpForm';
+import SignInForm from './components/SignInForm/SignInForm';
+import Landing from './components/Landing/Landing';
+import Dashboard from './components/Dashboard/Dashboard';
+import Home from './components/Home/Home';
+// import DailyLogList from './components/DailyLogList/DailyLogList';
+// import DailyLogDetails from './components/DailyLogDetails/DailyLogDetails';
+// import DailyLogForm from './components/DailyLogForm/DailyLogForm';
+import GoalList from './components/GoalList/GoalList';
+import GoalDetails from './components/GoalDetails/GoalDetails';
+import GoalForm from './components/GoalForm/GoalForm';
+// import * as dailyLogService from './services/dailyLogService';
+import * as goalService from './services/goalService';
 
-import DailyLogList from "./components/DailyLogList/DailyLogList";
-import DailyLogDetails from "./components/DailyLogDetails/DailyLogDetails";
-import DailyLogForm from "./components/DailyLogForm/DailyLogForm";
-
-// NOTE: We only need dailyLogService in App to fetch/update local state.
-import * as dailyLogService from "./services/dailyLogService";
 
 const App = () => {
+
   const { user } = useContext(UserContext);
+  const [goals, setGoals] = useState([]);
 
-  const [dailyLogs, setDailyLogs] = useState([]);
-  const [logsLoading, setLogsLoading] = useState(false);
-  const [logsError, setLogsError] = useState("");
-
-  const navigate = useNavigate();
-
-  // Fetch logs whenever a user is logged in
   useEffect(() => {
-    const fetchDailyLogs = async () => {
-      // If logged out, clear logs state
-      if (!user) {
-        setDailyLogs([]);
-        setLogsLoading(false);
-        setLogsError("");
-        return;
-      }
-
-      try {
-        setLogsLoading(true);
-        setLogsError("");
-
-        const data = await dailyLogService.index();
-
-        // Backend returns an array (per your controller)
-        const normalized = Array.isArray(data) ? data : data?.dailyLogs || [];
-        setDailyLogs(normalized);
-      } catch (err) {
-        console.error("Failed to fetch daily logs:", err);
-        setDailyLogs([]);
-        setLogsError(err?.message || "Failed to fetch daily logs.");
-      } finally {
-        setLogsLoading(false);
-      }
+    const fetchGoals = async () => {
+      if (!user) return;
+      const data = await goalService.index();
+      setGoals(data);
     };
-
-    fetchDailyLogs();
+    fetchGoals();
   }, [user]);
 
-  // CREATE
-  const handleAddDailyLog = async (dailyLogFormData) => {
-    try {
-      setLogsError("");
-
-      const created = await dailyLogService.create(dailyLogFormData);
-
-      // Put newest on top
-      setDailyLogs((prev) => [created, ...prev]);
-
-      navigate("/daily-logs");
-    } catch (err) {
-      console.error("Failed to create daily log:", err);
-      setLogsError(err?.message || "Failed to create daily log.");
-    }
+  //crear
+  const handleAddGoal = async (goalFormData) => {
+    const newGoal = await goalService.create(goalFormData);
+    setGoals([newGoal, ...goals]);
   };
 
-  // UPDATE
-  const handleUpdateDailyLog = async (dailyLogId, dailyLogFormData) => {
-    try {
-      setLogsError("");
-
-      const updated = await dailyLogService.updateDailyLog(
-        dailyLogId,
-        dailyLogFormData
-      );
-
-      setDailyLogs((prev) =>
-        prev.map((log) => (log._id === dailyLogId ? updated : log))
-      );
-
-      navigate(`/daily-logs/${dailyLogId}`);
-    } catch (err) {
-      console.error("Failed to update daily log:", err);
-      setLogsError(err?.message || "Failed to update daily log.");
-    }
+  const handleDeleteGoal = async (goalId) => {
+    await goalService.deleteGoal(goalId);
+    setGoals(goals.filter((g) => g._id !== goalId));
   };
-
-  // DELETE
-  const handleDeleteDailyLog = async (dailyLogId) => {
-    try {
-      setLogsError("");
-
-      await dailyLogService.deleteDailyLog(dailyLogId);
-
-      setDailyLogs((prev) => prev.filter((log) => log._id !== dailyLogId));
-
-      navigate("/daily-logs");
-    } catch (err) {
-      console.error("Failed to delete daily log:", err);
-      setLogsError(err?.message || "Failed to delete daily log.");
-    }
+  
+  //edit
+  const handleUpdateGoal = async (goalId, goalFormData) => {
+    const updatedGoal = await goalService.updateGoal(goalId, goalFormData);
+    setGoals(goals.map((g) => (g._id === goalId ? updatedGoal : g)));
   };
 
   return (
     <>
       <NavBar />
-
       <Routes>
-        {/* Home */}
-        <Route path="/" element={user ? <Dashboard /> : <Landing />} />
+        <Route path='/' element={user ? <Home /> : <Landing />} />
+        {user ? (
+          <>
+            {/* Protected routes (available only to signed-in users) */}
+            <Route path="/goals" element={<GoalList goals={goals} />} />
+            <Route path="/goals/new" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
+            <Route path="/goals/:goalId" element={<GoalDetails handleDeleteGoal={handleDeleteGoal} />} />
+            <Route path="/goals/:goalId/edit" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
 
-        {/* Auth */}
-        <Route path="/sign-up" element={<SignUpForm />} />
-        <Route path="/sign-in" element={<SignInForm />} />
-
-        {/* Daily Logs */}
-        <Route
-          path="/daily-logs"
-          element={
-            <DailyLogList
-              dailyLogs={dailyLogs}
-              loading={logsLoading}
-              error={logsError}
-            />
-          }
-        />
-
-        <Route
-          path="/daily-logs/new"
-          element={
-            <DailyLogForm
-              handleAddDailyLog={handleAddDailyLog}
-              handleUpdateDailyLog={handleUpdateDailyLog}
-            />
-          }
-        />
-
-        <Route
-          path="/daily-logs/:dailyLogId"
-          element={
-            <DailyLogDetails handleDeleteDailyLog={handleDeleteDailyLog} />
-          }
-        />
-
-        <Route
-          path="/daily-logs/:dailyLogId/edit"
-          element={
-            <DailyLogForm
-              handleAddDailyLog={handleAddDailyLog}
-              handleUpdateDailyLog={handleUpdateDailyLog}
-            />
-          }
-        />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </>
+        ) : (
+          <>
+            {/* Non-user routes (available only to guests) */}
+            <Route path='/sign-up' element={<SignUpForm />} />
+            <Route path="/sign-in" element={<SignInForm />} />
+          </>
+        )}
       </Routes>
     </>
   );
 };
 
 export default App;
-
-
