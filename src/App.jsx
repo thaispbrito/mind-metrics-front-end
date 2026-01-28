@@ -139,7 +139,19 @@ const App = () => {
 
   // CREATE goal
   const handleAddGoal = async (goalFormData) => {
-    const newGoal = await goalService.create(goalFormData);
+
+    // Convert startDate and endDate strings to Date objects
+    const payload = { ...goalFormData };
+    if (payload.startDate) {
+      const [year, month, day] = payload.startDate.split("-");
+      payload.startDate = new Date(year, month - 1, day);
+    }
+    if (payload.endDate) {
+      const [year, month, day] = payload.endDate.split("-");
+      payload.endDate = new Date(year, month - 1, day);
+    }
+
+    const newGoal = await goalService.create(payload);
     setGoals([newGoal, ...goals]);
     navigate('/goals');
   };
@@ -153,7 +165,19 @@ const App = () => {
 
   // UPDATE goal
   const handleUpdateGoal = async (goalId, goalFormData) => {
-    const updatedGoal = await goalService.updateGoal(goalId, goalFormData);
+
+    // Convert startDate and endDate strings to Date objects
+    const payload = { ...goalFormData };
+    if (payload.startDate) {
+      const [year, month, day] = payload.startDate.split("-");
+      payload.startDate = new Date(year, month - 1, day);
+    }
+    if (payload.endDate) {
+      const [year, month, day] = payload.endDate.split("-");
+      payload.endDate = new Date(year, month - 1, day);
+    }
+
+    const updatedGoal = await goalService.updateGoal(goalId, payload);
     setGoals(goals.map((g) => (g._id === goalId ? updatedGoal : g)));
     navigate(`/goals/${goalId}`);
   };
@@ -162,7 +186,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={user ? <Home dailyLogs={dailyLogs}/> : <Landing />} />
+        <Route path='/' element={user ? <Home dailyLogs={dailyLogs} /> : <Landing />} />
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}

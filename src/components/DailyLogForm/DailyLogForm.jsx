@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import * as dailyLogService from "../../services/dailyLogService";
 
-// Converts backend Date to local YYYY-MM-DD for input type="date"
+// Helper function to convert backend Date to local YYYY-MM-DD for input type="date"
 const toLocalDateInput = (date) => {
   const dt = new Date(date);
   const year = dt.getFullYear();

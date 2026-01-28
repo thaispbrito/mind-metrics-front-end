@@ -47,6 +47,8 @@ const GoalForm = (props) => {
             status: formData.status || "Active",
             targetMetric: formData.targetMetric || "Water Cups",
             targetValue: Number(formData.targetValue),
+            startDate: formData.startDate,
+            endDate: formData.endDate,
         };
 
         if (goalId) {
