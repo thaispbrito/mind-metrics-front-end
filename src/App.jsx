@@ -162,7 +162,7 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Landing />} />
+        <Route path='/' element={user ? <Home dailyLogs={dailyLogs}/> : <Landing />} />
         {user ? (
           <>
             {/* Protected routes (available only to signed-in users) */}

@@ -2,40 +2,59 @@ import { useContext } from "react";
 import { Link } from "react-router";
 import { UserContext } from "../../contexts/UserContext";
 
+
 const Home = ({ dailyLogs }) => {
-  const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
-  // Helper function: check if two dates are the same day
-  const isSameDay = (date1, date2) => {
-    const d1 = new Date(date1);
-    const d2 = new Date(date2);
+    // Format a date for comparison (YYYY-MM-DD)
+    const formatYMD = (date) => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
+
+    // Format a date for display (m/d/y)
+    const formatMDY = (date) => {
+        const d = new Date(date);
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        const year = d.getFullYear();
+        return `${month}/${day}/${year}`;
+    };
+
+    const today = formatYMD(new Date());
+
+
+    const todayLog = dailyLogs?.find((log) => {
+        if (!log.date || !user) return false;
+
+        const logUserId = log.userId?._id || log.userId;
+        const logDateYMD = formatYMD(log.date);
+        console.log({ logDateYMD });
+        console.log({ today });
+
+        return String(logUserId) === String(user._id) && logDateYMD === today;
+    });
+
     return (
-      d1.getFullYear() === d2.getFullYear() &&
-      d1.getMonth() === d2.getMonth() &&
-      d1.getDate() === d2.getDate()
+        <main>
+            <h1>Welcome to MindMetrics!</h1>
+
+            {user && (
+                <>
+                    {todayLog ? (
+                        <Link to={`/dailylogs/${todayLog._id}`}>
+                            View Today's Daily Log ({formatMDY(todayLog.date)})
+                        </Link>
+                    ) : (
+                        <Link to="/dailylogs/new">Add Daily Log</Link>
+                    )}
+                </>
+            )}
+        </main>
     );
-  };
-
-  // Find today's log for the current user
-  const todayLog = dailyLogs?.find(
-    (log) => log.userId === user?._id && isSameDay(log.date, new Date())
-  );
-
-  return (
-    <main>
-      <h1>Welcome to MindMetrics!</h1>
-
-      {user && (
-        <>
-          {todayLog ? (
-            <Link to={`/dailylogs/${todayLog._id}`}>View Today's Daily Log</Link>
-          ) : (
-            <Link to="/dailylogs/new">Add Daily Log</Link>
-          )}
-        </>
-      )}
-    </main>
-  );
 };
 
 export default Home;
