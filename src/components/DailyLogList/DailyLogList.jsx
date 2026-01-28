@@ -59,14 +59,14 @@ const DailyLogList = ({ dailyLogs }) => {
       {user && (
         <>
           {!hasTodaysLog ? (
-            <Link to="/dailylogs/new">Add Daily Log</Link>
+            <Link to="/dailylogs/new">New Daily Log</Link>
           ) : (
             <div>
               <p>
                 You already have a log for today! If you missed logging any
                 previous days, you can do it here:
               </p>
-              <Link to="/dailylogs/new?date=past">Add Daily Log</Link>
+              <Link to="/dailylogs/new?date=past">New Daily Log</Link>
             </div>
           )}
         </>

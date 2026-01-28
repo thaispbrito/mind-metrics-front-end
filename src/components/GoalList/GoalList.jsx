@@ -15,8 +15,9 @@ const GoalList = ({ goals = [] }) => {
       <h1>Goals</h1>
 
       <Link to="/goals/new">New Goal</Link>
-
+ 
       {/* Filter */}
+      <div>
       <label htmlFor="status-filter">Filter by Status:</label>
       <select
         id="status-filter"
@@ -28,6 +29,7 @@ const GoalList = ({ goals = [] }) => {
         <option value="Paused">Paused</option>
         <option value="Completed">Completed</option>
       </select>
+      </div>
 
       {/* List */}
       {filteredGoals.length === 0 ? (

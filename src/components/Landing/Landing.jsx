@@ -1,8 +1,10 @@
 const Landing = () => {
     return (
         <main>
-            <h1>Hello, you are on the landing page for visitors.</h1>
-            <p>Sign up now, or sign in to see your super secret dashboard!</p>
+            <h1>MindMetrics</h1>
+            <p>Track your mood, stress, and focus, monitor daily habits, and set personal goals in one place!</p>
+            <p>Gain insights into your patterns and progress to make smarter choices for your well-being.</p>
+            <p>Sign up or log in to start your journey.</p>
         </main>
     );
 };
