@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
+import styles from "./DailyLogList.module.css";
 
 const DailyLogList = ({ dailyLogs }) => {
   const { user } = useContext(UserContext);
@@ -32,9 +33,9 @@ const DailyLogList = ({ dailyLogs }) => {
   const filteredLogs =
     startDate && endDate
       ? sortedLogs.filter((log) => {
-        const logYMD = toYMD(log.date);
-        return logYMD >= startDate && logYMD <= endDate;
-      })
+          const logYMD = toYMD(log.date);
+          return logYMD >= startDate && logYMD <= endDate;
+        })
       : sortedLogs;
 
   // Check if the current user has a log for today
@@ -53,69 +54,87 @@ const DailyLogList = ({ dailyLogs }) => {
   const hasTodaysLog = userLogs?.some((log) => isSameDay(log.date, today));
 
   return (
-    <main>
-      <h1>Daily Logs</h1>
+    <main className={styles.page}>
+      <h1 className={styles.title}>Daily Logs</h1>
 
-      {/* Add today's log or show message to add previous logs, if any */}
       {user && (
-        <>
+        <div className={styles.actions}>
           {!hasTodaysLog ? (
-            <Link to="/dailylogs/new">New Daily Log</Link>
+            <Link className={styles.primaryLink} to="/dailylogs/new">
+              New Daily Log
+            </Link>
           ) : (
-            <div>
+            <div className={styles.helperBox}>
               <p>
                 You already have a log for today! If you missed logging any
                 previous days, you can do it here:
               </p>
-              <Link to="/dailylogs/new?date=past">New Daily Log</Link>
+              <Link className={styles.primaryLink} to="/dailylogs/new?date=past">
+                New Daily Log
+              </Link>
             </div>
           )}
-        </>
+        </div>
       )}
 
-      {/* Date range filter */}
-      <div style={{ margin: "20px 0" }}>
-        <label>
-          Start Date:{" "}
+      <section className={styles.filterBar}>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="startDate">
+            Start Date
+          </label>
           <input
+            id="startDate"
+            className={styles.input}
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
-        </label>
-        <label style={{ marginLeft: "10px" }}>
-          End Date:{" "}
+        </div>
+
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="endDate">
+            End Date
+          </label>
           <input
+            id="endDate"
+            className={styles.input}
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
-        </label>
-      </div>
+        </div>
+      </section>
 
-      {/* List daily logs */}
       {filteredLogs.length === 0 ? (
-        <p>No daily logs found for this period.</p>
+        <p className={styles.empty}>No daily logs found for this period.</p>
       ) : (
-        filteredLogs.map((dailyLog) => (
-          <Link key={dailyLog._id} to={`/dailylogs/${dailyLog._id}`}>
-            <article>
-              <header>
-                <h2>{dailyLog.mood}</h2>
-                <p>
-                  Tracking Date: {new Date(dailyLog.date).toLocaleDateString()}
+        <section className={styles.list}>
+          {filteredLogs.map((dailyLog) => (
+            <Link
+              key={dailyLog._id}
+              className={styles.cardLink}
+              to={`/dailylogs/${dailyLog._id}`}
+            >
+              <article className={styles.card}>
+                <header className={styles.cardHeader}>
+                  <h2 className={styles.mood}>{dailyLog.mood}</h2>
+                  <p className={styles.meta}>
+                    {new Date(dailyLog.date).toLocaleDateString()}
+                  </p>
+                </header>
+
+                <p className={styles.stats}>
+                  Stress: {dailyLog.stressLevel} | Focus: {dailyLog.focusLevel}
                 </p>
-              </header>
-              <p>
-                Stress: {dailyLog.stressLevel} | Focus: {dailyLog.focusLevel}
-              </p>
-            </article>
-          </Link>
-        ))
+              </article>
+            </Link>
+          ))}
+        </section>
       )}
     </main>
   );
 };
 
 export default DailyLogList;
+
 
