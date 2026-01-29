@@ -25,13 +25,13 @@ const NavBar = () => {
     return (
         <nav className={styles.container}>
             <div className={styles.inner}>
-                <Link to="/" className={styles.brand}>
+                <div className={styles.brand}>
                     <span className={styles.logoDot} />
                     <span className={styles.brandText}>MindMetrics</span>
-                </Link>
+                </div>
 
                 {user ? (
-                    <ul className={styles.menu}>
+                    <ul className={`${styles.menu} ${styles.menuRight}`}>
                         <li>
                             <Link className={styles.link} to="/">
                                 Home
@@ -44,7 +44,6 @@ const NavBar = () => {
                             </Link>
                         </li>
 
-                        {/* Si tu dashboard es la home cuando estás logueada, usa "/" */}
                         <li>
                             <Link className={styles.link} to="/">
                                 Dashboard
@@ -61,13 +60,14 @@ const NavBar = () => {
                             <Link
                                 className={`${styles.btn} ${styles.btnSmall}`}
                                 to="/"
-                                onClick={handleSignOut}> 
+                                onClick={handleSignOut}
+                            >
                                 Sign Out
                             </Link>
                         </li>
                     </ul>
                 ) : (
-                    <ul className={styles.menu}>
+                    <ul className={`${styles.menu} ${styles.menuRight}`}>
                         <li>
                             <Link className={styles.link} to="/sign-in">
                                 Sign In
