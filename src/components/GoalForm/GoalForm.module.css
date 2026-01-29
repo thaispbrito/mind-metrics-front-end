@@ -42,9 +42,10 @@
 
 .label {
     font-size: 14px;
-    color: var(--muted);
+    color: rgba(17, 24, 39, 0.85); /* negro sombreado */
     font-weight: 600;
 }
+
 
 .input,
 .select,
@@ -55,6 +56,16 @@
     background: white;
     font: inherit;
     color: var(--text);
+    --text: #111827;
+
+}
+
+.input::placeholder,
+.textarea::placeholder {
+color: rgba(17, 24, 39, 0.55);
+opacity: 1; 
+--text: #111827;
+
 }
 
 .textarea {
@@ -62,11 +73,23 @@
     resize: vertical;
 }
 
+
+.select:invalid {
+    color: rgba(17, 24, 39, 0.55); /* se aplica cuando value="" */
+  }
+  
+  .select option {
+    color: rgba(17, 24, 39, 0.95); /* opciones normales */
+  }
+
+  
 .input:focus,
 .select:focus,
 .textarea:focus {
     outline: 3px solid rgba(0, 160, 223, 0.25);
     border-color: rgba(0, 160, 223, 0.5);
+    --text: #111827;
+
 }
 
 .actions {
@@ -79,24 +102,35 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
+  
     padding: 10px 14px;
     border-radius: 10px;
-    border: 1px solid var(--border);
-    background: white;
-
+  
+    background: var(--primary);
+    border: 1px solid var(--primary);
+  
     font-weight: 600;
-    color: var(--text);
+    color: white;
     text-decoration: none;
-
+  
     cursor: pointer;
-
-    /* makes button consistent */
+  
     font: inherit;
     line-height: 1;
     appearance: none;
     -webkit-appearance: none;
+  }
+
+
+  
+.dateInput:invalid {
+  color: rgba(17, 24, 39, 0.55); 
 }
+
+.dateInput:valid {
+  color: rgba(17, 24, 39, 0.95); 
+}
+
 
 .primary {
     background: var(--primary);

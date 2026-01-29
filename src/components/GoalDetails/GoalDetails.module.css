@@ -59,6 +59,7 @@
     margin-top: 10px;
     color: var(--muted);
     line-height: 1.6;
+
 }
 
 .section {
@@ -97,11 +98,12 @@
 
     padding: 10px 14px;
     border-radius: 10px;
-    border: 1px solid var(--border);
-    background: white;
+
+    background: var(--primary);
+    border: 1px solid var(--primary);
 
     font-weight: 600;
-    color: var(--text);
+    color: white;
     text-decoration: none;
 
     cursor: pointer;
@@ -111,6 +113,12 @@
     appearance: none;
     -webkit-appearance: none;
 }
+
+.action:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+}
+
 
 /* Mobile */
 @media (max-width: 720px) {

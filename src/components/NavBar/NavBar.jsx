@@ -1,11 +1,12 @@
-import { useContext } from 'react';
-import { Link } from 'react-router';
-import { UserContext } from '../../contexts/UserContext';
+import { useContext } from "react";
+import { Link } from "react-router";
+import { UserContext } from "../../contexts/UserContext";
+import styles from "./NavBar.module.css";
 
 const NavBar = () => {
     // Pass the UserContext object to the useContext hook to access:
-    // - The user state 
-    // - The setUser function to update the user state 
+    // - The user state
+    // - The setUser function to update the user state
     //
     // Destructure the object returned by the useContext hook for easy access
     // to the data we added to the context with familiar names.
@@ -16,29 +17,71 @@ const NavBar = () => {
     // Add the handleSignOut function
     const handleSignOut = () => {
         // Clear the token from localStorage
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
         // Clear the user state
         setUser(null);
     };
 
     return (
-        <nav>
-            {user ? (
-                <ul>
-                    <li><Link to='/'>Home</Link></li>
-                    <li><Link to='dashboard/'>Dashboard</Link></li>
-                    <li><Link to='/goals'>Goals</Link></li>
-                    <li><Link to='/dailylogs'>Daily Log History</Link></li>
-                    <li><Link to='/' onClick={handleSignOut}>Sign Out</Link></li>
-                </ul>
-            ) : (
-                <ul>
-                    <li><Link to='/sign-in'>Sign In</Link></li>
-                    <li><Link to="/sign-up">Sign Up</Link></li>
-                </ul>
-            )}
+        <nav className={styles.container}>
+            <div className={styles.inner}>
+                <Link to="/" className={styles.brand}>
+                    <span className={styles.logoDot} />
+                    <span className={styles.brandText}>MindMetrics</span>
+                </Link>
+
+                {user ? (
+                    <ul className={styles.menu}>
+                        <li>
+                            <Link className={styles.link} to="/">
+                                Home
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link className={styles.link} to="/dailylogs">
+                                Daily Log
+                            </Link>
+                        </li>
+
+                        {/* Si tu dashboard es la home cuando estás logueada, usa "/" */}
+                        <li>
+                            <Link className={styles.link} to="/">
+                                Dashboard
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link className={styles.link} to="/goals">
+                                Goals
+                            </Link>
+                        </li>
+
+                        <li className={styles.pushRight}>
+                            <Link
+                                className={`${styles.btn} ${styles.btnSmall}`}
+                                to="/"
+                                onClick={handleSignOut}> 
+                                Sign Out
+                            </Link>
+                        </li>
+                    </ul>
+                ) : (
+                    <ul className={styles.menu}>
+                        <li>
+                            <Link className={styles.link} to="/sign-in">
+                                Sign In
+                            </Link>
+                        </li>
+                        <li>
+                            <Link className={styles.btn} to="/sign-up">
+                                Sign Up
+                            </Link>
+                        </li>
+                    </ul>
+                )}
+            </div>
         </nav>
     );
 };
-
 export default NavBar;

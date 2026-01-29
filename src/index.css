@@ -73,3 +73,7 @@ form {
 button {
   font-family: inherit;
 }
+
+body {
+  padding-top: 80px;
+}

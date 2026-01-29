@@ -158,7 +158,7 @@ const GoalForm = (props) => {
                             Start Date
                         </label>
                         <input
-                            className={styles.input}
+                            className={`${styles.input} ${styles.dateInput}`}
                             required
                             type="date"
                             name="startDate"
@@ -173,7 +173,7 @@ const GoalForm = (props) => {
                             End Date
                         </label>
                         <input
-                            className={styles.input}
+                            className={`${styles.input} ${styles.dateInput}`}
                             required
                             type="date"
                             name="endDate"
@@ -205,9 +205,9 @@ const GoalForm = (props) => {
                     </div>
 
                     <div className={styles.actions}>
-                        <button className={styles.action} type="submit">
+                        <Link className={styles.action} type="submit">
                             Submit
-                        </button>
+                        </Link>
 
                         <Link className={styles.action} to="/goals">
                             Cancel
