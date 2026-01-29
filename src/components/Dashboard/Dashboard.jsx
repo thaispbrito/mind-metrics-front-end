@@ -15,56 +15,61 @@ const goalRules = {
     "Screen Minutes": { field: "screenHours", comparison: "lte" },
 };
 
+const moodCategories = {
+    positive: ["Happy", "Calm", "Confident", "Excited", "Motivated"],
+    negative: ["Sad", "Frustrated", "Stressed", "Anxious", "Angry", "Depressed", "Emotional"],
+};
+
 const recommendationRules = [
     {
         field: "stressLevel",
         condition: value => value > 3.5,
-        message: "Your stress levels have been high recently. Try relaxation techniques or meditation."
+        message: "Your stress levels have been high recently. Try relaxation techniques or meditation!"
     },
     {
         field: "focusLevel",
         condition: value => value < 3,
-        message: "Your focus has been low. Consider minimizing distractions and taking short breaks."
+        message: "Your focus has been low. Consider minimizing distractions and taking short breaks!"
     },
     {
         field: "sleepHours",
         condition: value => value < 7,
-        message: "You're not getting enough sleep. Aim for 7-9 hours per night."
+        message: "You're not getting enough sleep. Aim for 7-9 hours per night!"
     },
     {
         field: "exerciseMin",
         condition: value => value < 20,
-        message: "Your exercise has been low. Try to be active at least 20 minutes daily."
+        message: "Your exercise has been low. Try to be active at least 20 minutes daily!"
     },
     {
         field: "waterCups",
         condition: value => value < 6,
-        message: "Remember to stay hydrated! Drink at least 6 cups of water per day."
+        message: "Remember to stay hydrated! Drink at least 6 cups of water per day!"
     },
     {
         field: "screenHours",
         condition: value => value > 4,
-        message: "Screen time is high. Take breaks from your devices to rest your eyes."
+        message: "Screen time is high. Take breaks from your devices to rest your eyes!"
     },
     {
         field: "workHours",
         condition: value => value > 9,
-        message: "You've been overworking. Try to keep a better worklife balance."
+        message: "You've been overworking. Try to keep a better worklife balance!"
     },
     {
         field: "dietScore",
         condition: value => value < 3,
-        message: "Your diet hasn’t been great. Try to opt for more healthy and fresh meals and snacks."
+        message: "Your diet hasn't been great. Try to opt for more healthy and fresh meals!"
     },
     {
         field: "hobbyMin",
         condition: value => value < 15,
-        message: "You haven’t spent much time on hobbies. Try to make more time for yourself!"
+        message: "You haven't spent much time on hobbies. Try to make more time for yourself!"
     },
     {
         field: "meditationMin",
         condition: value => value < 10,
-        message: "You haven’t meditated much. Try spending at least 10 minutes on mindfulness or meditation."
+        message: "You haven't meditated much. Try spending at least 10 minutes on mindfulness or meditation!"
     }
 ];
 
@@ -111,13 +116,19 @@ const Dashboard = () => {
         return `${month}/${day}/${year}`;
     };
 
+    // Show only the logged-in user's data
+    const userLogs = logs.filter((log) => String(log.userId?._id || log.userId) === String(user._id));
+    const userGoals = goals.filter((goal) => String(goal.userId?._id || goal.userId) === String(user._id));
+
+    if (!userLogs.length) return <p>No dashboard data available yet. Start by adding a daily log!</p>;
+
     // Calculate seleted logs for period
-    const selectedLogs = [...logs]
+    const selectedLogs = [...userLogs]
         .sort((a, b) => checkDate(b.date) - checkDate(a.date))
         .slice(0, period);
 
     if (!selectedLogs.length) {
-        return <p>No logs in the selected period.</p>;
+        return <p>No daily logs in the selected period.</p>;
     }
 
     // Compute stress and focus averages
@@ -143,7 +154,7 @@ const Dashboard = () => {
         goalAvgs[field] = goalAvgs[field].count > 0 ? goalAvgs[field].sum / goalAvgs[field].count : null;
     });
 
-    // Recommendations based on recent daily logs
+    // Recommendations based on selected daily logs
     const recommendations = [];
     recommendationRules.forEach(rule => {
         let value;
@@ -156,11 +167,34 @@ const Dashboard = () => {
         }
     });
 
+    // Mood-based insights
+    const moodCounts = selectedLogs.reduce(
+        (acc, log) => {
+            if (moodCategories.positive.includes(log.mood)) acc.positive += 1;
+            else if (moodCategories.negative.includes(log.mood)) acc.negative += 1;
+            return acc;
+        },
+        { positive: 0, negative: 0 }
+    );
+    const totalMoods = selectedLogs.length;
+    const moodPercents = {
+        positive: (moodCounts.positive / totalMoods) * 100,
+        negative: (moodCounts.negative / totalMoods) * 100,
+    };
+
+    const moodInsights = [];
+    if (moodPercents.negative > 50) {
+        moodInsights.push("Your moods have been mostly negative recently. Take a moment to review your daily habits to see what might improve your mood!");
+    } else if (moodPercents.positive > 50) {
+        moodInsights.push("You've been feeling mostly positive. Keep up the good mood!");
+    }
+    recommendations.push(...moodInsights);
+
     // Filter active goals for the selected period
     const periodStartDate = checkDate(selectedLogs[selectedLogs.length - 1].date);
     const periodEndDate = checkDate(selectedLogs[0].date);
 
-    const activeGoals = goals.filter((goal) => {
+    const activeGoals = userGoals.filter((goal) => {
         if (goal.status !== "Active") return false;
 
         const goalStart = checkDate(goal.startDate);
@@ -170,31 +204,27 @@ const Dashboard = () => {
     });
 
     // Evaluate goals
-    const evaluatedGoals = activeGoals
-        .map((goal) => {
-            const rule = goalRules[goal.targetMetric];
-            if (!rule) return null;
+    const evaluatedGoals = activeGoals.map((goal) => {
+        const rule = goalRules[goal.targetMetric];
+        if (!rule) return null;
 
-            const { field, comparison } = rule;
-            const value = goalAvgs[field];
+        const { field, comparison } = rule;
+        const value = goalAvgs[field];
 
-            if (value === undefined || value === null) {
-                return { ...goal, value: null, met: null }; // Not enough data 
-            }
+        if (value === undefined || value === null) return { ...goal, value: null, met: null }; // Not enough data 
 
-            const met = comparison === "gte" ? value >= goal.targetValue : value <= goal.targetValue;
+        const met = comparison === "gte" ? value >= goal.targetValue : value <= goal.targetValue;
 
-            return { ...goal, value: Number(value.toFixed(1)), met };
-        })
+        return { ...goal, value: Number(value.toFixed(1)), met };
+    })
         .filter(Boolean);
 
     // Chart data for selected logs    
-    const chartData = selectedLogs
-        .map(log => ({
-            date: formatDate(log.date),
-            Stress: log.stressLevel,
-            Focus: log.focusLevel,
-        }))
+    const chartData = selectedLogs.map(log => ({
+        date: formatDate(log.date),
+        Stress: log.stressLevel,
+        Focus: log.focusLevel,
+    }))
         .reverse(); // chronological order
 
     return (
