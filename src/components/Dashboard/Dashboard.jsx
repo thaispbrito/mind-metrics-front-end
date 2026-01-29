@@ -73,6 +73,58 @@ const recommendationRules = [
     }
 ];
 
+const weatherCategories = {
+    good: ["Sunny", "Clear", "Partly cloudy"],
+    neutral: ["Cloudy", "Overcast", "Mist", "Fog", "Freezing fog"],
+    rain: [
+        "Patchy rain possible", "Patchy light rain", "Light rain",
+        "Moderate rain", "Heavy rain", "Light rain shower",
+        "Moderate or heavy rain shower", "Torrential rain shower",
+        "Patchy light rain with thunder", "Moderate or heavy rain with thunder"
+    ],
+    snow: [
+        "Patchy snow possible", "Light snow", "Moderate snow", "Heavy snow",
+        "Blizzard", "Ice pellets", "Light sleet", "Moderate or heavy sleet",
+        "Patchy light snow", "Patchy moderate snow", "Patchy heavy snow",
+        "Light snow showers", "Moderate or heavy snow showers"
+    ],
+    extreme: [
+        "Thundery outbreaks possible",
+        "Freezing drizzle",
+        "Moderate or heavy freezing rain",
+        "Heavy freezing drizzle",
+        "Blowing snow"
+    ]
+};
+
+const weatherInsights = {
+    good: [
+        "The weather looks great today 🌞 Perfect time to get outside!",
+        "Beautiful weather today! Take advantage of it!",
+        "Clear skies ahead. A great day to move your body or relax outdoors."
+    ],
+    neutral: [
+        "The weather is calm and mild today.",
+        "A quiet weather day. Perfect for staying focused!",
+        "Not too exciting out there, but great for productivity."
+    ],
+    rain: [
+        "Looks rainy today ☔ Maybe a good day for indoor activities.",
+        "Rainy weather. Stay cozy and take care!",
+        "You might want an umbrella today!"
+    ],
+    snow: [
+        "Snowy conditions today ❄️ Stay warm and be careful outside.",
+        "Winter vibes today. Dress warmly!",
+        "Snow is in the air. Take it slow out there."
+    ],
+    extreme: [
+        "Severe weather conditions today ⚠️ Best to stay indoors if possible.",
+        "Weather looks rough. Prioritize safety today.",
+        "Challenging weather conditions. Take extra care!"
+    ]
+};
+
 const Dashboard = () => {
     const { user } = useContext(UserContext);
     const [logs, setLogs] = useState([]);
@@ -112,7 +164,7 @@ const Dashboard = () => {
                     },
                 });
                 const data = await res.json();
-                console.log({data})
+                console.log({ data })
                 setLatestLog(data.latestLog);
                 setWeather(data.weather);
             } catch (err) {
@@ -124,8 +176,6 @@ const Dashboard = () => {
         fetchLatest();
 
     }, [user]);
-
-
 
     if (!user) return null;
     if (loading) return <p>Loading dashboard...</p>;
@@ -254,6 +304,29 @@ const Dashboard = () => {
     }))
         .reverse(); // chronological order
 
+
+    // Weather Insights
+    const getWeatherInsight = (condition) => {
+        if (!condition) return null;
+
+        const normalized = condition.trim().toLowerCase();
+
+        const category = Object.entries(weatherCategories)
+            .find(([_, conditions]) =>
+                conditions.some(c => c.toLowerCase() === normalized)
+            )?.[0];
+
+        if (!category) return "Weather conditions are a bit unusual today.";
+
+        const messages = weatherInsights[category];
+        return messages[Math.floor(Math.random() * messages.length)];
+    };
+
+    // Weather message
+    const weatherMessage = weather?.condition
+        ? getWeatherInsight(weather.condition)
+        : null;
+
     return (
         <DashboardView
             user={user}
@@ -268,6 +341,7 @@ const Dashboard = () => {
             formatDate={formatDate}
             latestLog={latestLog} // for weather API
             weather={weather} // for weather API
+            weatherMessage={weatherMessage} 
         />
     );
 };
