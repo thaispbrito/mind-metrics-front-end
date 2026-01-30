@@ -17,52 +17,53 @@ const Home = ({ dailyLogs }) => {
         );
     };
 
-    // Format a date for display as m/d/y
-    const formatMDY = (date) => {
-        const dt = new Date(date);
-        const month = dt.getMonth() + 1;
-        const day = dt.getDate();
-        const year = dt.getFullYear();
-        return `${month}/${day}/${year}`;
-    };
-
     // Find today's log for the current user
     const todayLog = dailyLogs?.find((log) => {
         if (!log.date || !user) return false;
         const logUserId = log.userId?._id || log.userId;
-        return String(logUserId) === String(user._id) && isSameCalendarDay(log.date, new Date());
+        return (
+            String(logUserId) === String(user._id) &&
+            isSameCalendarDay(log.date, new Date())
+        );
     });
 
     return (
         <main className={styles.page}>
-          <section className={styles.card}>
-            <h1 className={styles.title}>Welcome to MindMetrics, {user?.username}!</h1>
-    
-            <p className={styles.subtitle}>
-              Quick check: log your day and keep building healthy habits.
-            </p>
-    
-            {user && (
-              <div className={styles.actions}>
-                {todayLog ? (
-                  <Link className={styles.btn} to={`/dailylogs/${todayLog._id}`}>
-                    View Today&apos;s Daily Log ({formatMDY(todayLog.date)})
-                  </Link>
-                ) : (
-                  <Link className={styles.btn} to="/dailylogs/new">
-                    Add Daily Log
-                  </Link>
-                )}
-              </div>
-            )}
-    
-            <p className={styles.helper}>
-              Tip: one daily log per day helps you spot patterns faster.
-            </p>
-          </section>
+            <section className={styles.card}>
+                <h1 className={styles.title}>
+                    Welcome to MindMetrics, {user.username}!
+                </h1>
+
+                <p className={styles.subtitle}>
+                    Start your day with a quick check-in. Track your mood,
+                    stress, focus, and habits — and see your progress over time.
+                </p>
+
+                <div className={styles.divider} />
+
+                <div className={styles.actions}>
+                    {todayLog ? (
+                        <Link
+                            className={styles.btn}
+                            to={`/dailylogs/${todayLog._id}`}
+                        >
+                            View Today’s Daily Log
+                        </Link>
+                    ) : (
+                        <Link className={styles.btn} to="/dailylogs/new">
+                            Add Today’s Daily Log
+                        </Link>
+                    )}
+
+                </div>
+
+                <p className={styles.hint}>
+                    Tip: Consistency beats intensity — even 1 minute a day
+                    builds momentum.
+                </p>
+            </section>
         </main>
-      );
-    };
+    );
+};
 
 export default Home;
-
