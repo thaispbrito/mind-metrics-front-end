@@ -17,15 +17,6 @@ const Home = ({ dailyLogs }) => {
         );
     };
 
-    // Format a date for display as m/d/y
-    const formatMDY = (date) => {
-        const dt = new Date(date);
-        const month = dt.getMonth() + 1;
-        const day = dt.getDate();
-        const year = dt.getFullYear();
-        return `${month}/${day}/${year}`;
-    };
-
     // Find today's log for the current user
     const todayLog = dailyLogs?.find((log) => {
         if (!log.date || !user) return false;
@@ -46,7 +37,7 @@ const Home = ({ dailyLogs }) => {
               <div className={styles.actions}>
                 {todayLog ? (
                   <Link className={styles.btn} to={`/dailylogs/${todayLog._id}`}>
-                    View Today&apos;s Daily Log ({formatMDY(todayLog.date)})
+                    View Today&apos;s Daily Log
                   </Link>
                 ) : (
                   <Link className={styles.btn} to="/dailylogs/new">
