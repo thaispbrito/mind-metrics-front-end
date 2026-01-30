@@ -11,7 +11,7 @@
   --background: #f2f4f8;
   --card: #ffffff;
 
- 
+
   --text: #111827;
   --muted: rgba(17, 24, 39, 0.75);
   --border: rgba(17, 24, 39, 0.12);
@@ -24,7 +24,7 @@
   letter-spacing: -0.01em;
   line-height: 1.5;
   font-weight: 700;
-  
+
 
   color: var(--text);
   background-color: var(--background);
@@ -74,7 +74,7 @@ h3 {
 
 
 .pageTitle {
-  color: #fff;  
+  color: #fff;
 }
 
 h1 {
@@ -122,4 +122,3 @@ select,
 textarea {
   font: inherit;
 }
-

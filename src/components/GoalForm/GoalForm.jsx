@@ -44,7 +44,7 @@ const GoalForm = (props) => {
 
         const payload = {
             ...formData,
-            targetValue: Number(formData.targetValue),
+            targetValue: formData.targetValue === "" ? undefined : Number(formData.targetValue),
         };
 
         if (goalId) {
@@ -144,6 +144,7 @@ const GoalForm = (props) => {
                             required
                             type="number"
                             name="targetValue"
+                            min={0}
                             id="targetValue-input"
                             value={formData.targetValue}
                             onChange={handleChange}

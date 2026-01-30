@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 
 import * as dailyLogService from "../../services/dailyLogService";
 import styles from "./DailyLogForm.module.css";
@@ -13,7 +13,7 @@ const toLocalDateInput = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-const MOODS = [
+const moods = [
   "Happy",
   "Calm",
   "Confident",
@@ -26,6 +26,72 @@ const MOODS = [
   "Emotional",
   "Angry",
   "Depressed",
+];
+
+const usStates = [
+  { abbr: "AL", name: "Alabama" },
+  { abbr: "AK", name: "Alaska" },
+  { abbr: "AZ", name: "Arizona" },
+  { abbr: "AR", name: "Arkansas" },
+  { abbr: "CA", name: "California" },
+  { abbr: "CO", name: "Colorado" },
+  { abbr: "CT", name: "Connecticut" },
+  { abbr: "DE", name: "Delaware" },
+  { abbr: "FL", name: "Florida" },
+  { abbr: "GA", name: "Georgia" },
+  { abbr: "HI", name: "Hawaii" },
+  { abbr: "ID", name: "Idaho" },
+  { abbr: "IL", name: "Illinois" },
+  { abbr: "IN", name: "Indiana" },
+  { abbr: "IA", name: "Iowa" },
+  { abbr: "KS", name: "Kansas" },
+  { abbr: "KY", name: "Kentucky" },
+  { abbr: "LA", name: "Louisiana" },
+  { abbr: "ME", name: "Maine" },
+  { abbr: "MD", name: "Maryland" },
+  { abbr: "MA", name: "Massachusetts" },
+  { abbr: "MI", name: "Michigan" },
+  { abbr: "MN", name: "Minnesota" },
+  { abbr: "MS", name: "Mississippi" },
+  { abbr: "MO", name: "Missouri" },
+  { abbr: "MT", name: "Montana" },
+  { abbr: "NE", name: "Nebraska" },
+  { abbr: "NV", name: "Nevada" },
+  { abbr: "NH", name: "New Hampshire" },
+  { abbr: "NJ", name: "New Jersey" },
+  { abbr: "NM", name: "New Mexico" },
+  { abbr: "NY", name: "New York" },
+  { abbr: "NC", name: "North Carolina" },
+  { abbr: "ND", name: "North Dakota" },
+  { abbr: "OH", name: "Ohio" },
+  { abbr: "OK", name: "Oklahoma" },
+  { abbr: "OR", name: "Oregon" },
+  { abbr: "PA", name: "Pennsylvania" },
+  { abbr: "RI", name: "Rhode Island" },
+  { abbr: "SC", name: "South Carolina" },
+  { abbr: "SD", name: "South Dakota" },
+  { abbr: "TN", name: "Tennessee" },
+  { abbr: "TX", name: "Texas" },
+  { abbr: "UT", name: "Utah" },
+  { abbr: "VT", name: "Vermont" },
+  { abbr: "VA", name: "Virginia" },
+  { abbr: "WA", name: "Washington" },
+  { abbr: "WV", name: "West Virginia" },
+  { abbr: "WI", name: "Wisconsin" },
+  { abbr: "WY", name: "Wyoming" },
+];
+
+const numericFields = [
+  "stressLevel",
+  "focusLevel",
+  "sleepHours",
+  "exerciseMin",
+  "meditationMin",
+  "waterCups",
+  "dietScore",
+  "screenHours",
+  "workHours",
+  "hobbyMin",
 ];
 
 const makeRange = (start, end, step = 1) => {
@@ -54,7 +120,7 @@ const initialState = {
   workHours: "",
   hobbyMin: "",
   location: "",
-  weather: "",
+  state: "",
   notes: "",
 };
 
@@ -71,9 +137,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
       const dailyLogData = await dailyLogService.show(dailyLogId);
 
       // Convert Date to YYYY-MM-DD for date input
-      const dateStr = dailyLogData?.date
-        ? toLocalDateInput(dailyLogData.date)
-        : "";
+      const dateStr = dailyLogData?.date ? toLocalDateInput(dailyLogData.date) : "";
 
       setFormData({
         ...dailyLogData,
@@ -84,8 +148,6 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
     if (dailyLogId) fetchDailyLog();
   }, [dailyLogId]);
 
-  // ✅ Needed because your JSX uses onChange={handleChange}
-  // (This matches your original functionality: update form state from inputs)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
 
@@ -99,8 +161,11 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
     evt.preventDefault();
 
     const payload = { ...formData };
+    numericFields.forEach((field) => {
+      if (payload[field] !== "") payload[field] = Number(payload[field]);
+    });
 
-    // don’t send userId back
+    // Don’t send userId back
     delete payload.userId;
 
     if (dailyLogId) {
@@ -148,7 +213,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
               <option value="" disabled>
                 Select option
               </option>
-              {MOODS.map((m) => (
+              {moods.map((m) => (
                 <option key={m} value={m}>
                   {m}
                 </option>
@@ -382,17 +447,26 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
 
           <div className={styles.row}>
             <label className={styles.label} htmlFor="weather-input">
-              Weather
+              State
             </label>
-            <input
+            <select
               className={styles.control}
               required
-              type="text"
-              name="weather"
-              id="weather-input"
-              value={formData.weather}
+              name="state"
+              id="state-input"
+              value={formData.state}
               onChange={handleChange}
-            />
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+
+              {usStates.map(({ abbr, name }) => (
+                <option key={abbr} value={abbr}>
+                  {name} - {abbr}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={`${styles.row} ${styles.textareaRow}`}>
@@ -414,6 +488,11 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           <button className={styles.buttonPrimary} type="submit">
             Submit
           </button>
+
+          <Link className={styles.buttonPrimary} to="/dailylogs">
+            Cancel
+          </Link>
+
         </div>
       </form>
     </main>

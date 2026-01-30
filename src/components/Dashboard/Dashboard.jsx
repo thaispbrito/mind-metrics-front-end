@@ -3,6 +3,7 @@ import { UserContext } from '../../contexts/UserContext';
 import * as dailyLogService from '../../services/dailyLogService';
 import * as goalService from '../../services/goalService';
 import DashboardView from '../DashboardView/DashboardView';
+import styles from './Dashboard.module.css';
 
 const goalRules = {
     "Sleep Hours": { field: "sleepHours", comparison: "gte" },
@@ -99,29 +100,29 @@ const weatherCategories = {
 
 const weatherInsights = {
     good: [
-        "The weather looks great today 🌞 Perfect time to get outside!",
-        "Beautiful weather today! Take advantage of it!",
-        "Clear skies ahead. A great day to move your body or relax outdoors."
+        "Bright weather today, mood boost likely! 🌞",
+        "A great day to get some fresh air and recharge!",
+        "Clear skies can help you feel energized and focused!"
     ],
     neutral: [
-        "The weather is calm and mild today.",
-        "A quiet weather day. Perfect for staying focused!",
-        "Not too exciting out there, but great for productivity."
+        "Calm weather—good for steady focus and reflection.",
+        "A quiet day—perfect for mindful moments or indoor tasks.",
+        "Neutral skies—take a moment to check in with yourself."
     ],
     rain: [
-        "Looks rainy today ☔ Maybe a good day for indoor activities.",
-        "Rainy weather. Stay cozy and take care!",
-        "You might want an umbrella today!"
+        "Rainy weather—cozy up and care for yourself.",
+        "A wet day—great for indoor relaxation or small tasks.",
+        "Rain can affect mood—pause, breathe, and stay calm."
     ],
     snow: [
-        "Snowy conditions today ❄️ Stay warm and be careful outside.",
-        "Winter vibes today. Dress warmly!",
-        "Snow is in the air. Take it slow out there."
+        "Snowy conditions—take it slow and stay warm! ❄️",
+        "A wintery day—perfect for cozy routines or reflection!",
+        "Snow can be calming—focus on self-care and safety."
     ],
     extreme: [
-        "Severe weather conditions today ⚠️ Best to stay indoors if possible.",
-        "Weather looks rough. Prioritize safety today.",
-        "Challenging weather conditions. Take extra care!"
+        "Severe weather! Prioritize safety and rest. ⚠️",
+        "Extreme conditions—slow down and check in with yourself.",
+        "Challenging weather—focus on calm and grounding activities."
     ]
 };
 
@@ -131,7 +132,6 @@ const Dashboard = () => {
     const [goals, setGoals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [period, setPeriod] = useState(3); // dafault period: last 3 days
-    // State variables for weather API
     const [latestLog, setLatestLog] = useState(null);
     const [weather, setWeather] = useState(null);
 
@@ -197,16 +197,21 @@ const Dashboard = () => {
     const userLogs = logs.filter((log) => String(log.userId?._id || log.userId) === String(user._id));
     const userGoals = goals.filter((goal) => String(goal.userId?._id || goal.userId) === String(user._id));
 
-    if (!userLogs.length) return <p>No dashboard data available yet. Start by adding a daily log!</p>;
+    if (!userLogs.length)
+        return (
+            <div className={styles.noDataContainer}>
+                <div className={styles.noDataBox}>
+                    <p className={styles.noDataText}>
+                        No dashboard data available yet. <br />Start by adding a daily log!
+                    </p>
+                </div>
+            </div>
+        );
 
     // Calculate seleted logs for period
     const selectedLogs = [...userLogs]
         .sort((a, b) => checkDate(b.date) - checkDate(a.date))
         .slice(0, period);
-
-    if (!selectedLogs.length) {
-        return <p>No daily logs in the selected period.</p>;
-    }
 
     // Compute stress and focus averages
     const stressAvg = selectedLogs.reduce((sum, log) => sum + log.stressLevel, 0) / (selectedLogs.length || 1);
@@ -311,10 +316,8 @@ const Dashboard = () => {
 
         const normalized = condition.trim().toLowerCase();
 
-        const category = Object.entries(weatherCategories)
-            .find(([_, conditions]) =>
-                conditions.some(c => c.toLowerCase() === normalized)
-            )?.[0];
+        const category = Object.entries(weatherCategories).find(([, conditions]) =>
+            conditions.some(c => c.toLowerCase() === normalized))?.[0];
 
         if (!category) return "Weather conditions are a bit unusual today.";
 
@@ -323,9 +326,7 @@ const Dashboard = () => {
     };
 
     // Weather message
-    const weatherMessage = weather?.condition
-        ? getWeatherInsight(weather.condition)
-        : null;
+    const weatherMessage = weather?.condition ? getWeatherInsight(weather.condition) : null;
 
     return (
         <DashboardView
@@ -339,9 +340,9 @@ const Dashboard = () => {
             evaluatedGoals={evaluatedGoals}
             recommendations={recommendations}
             formatDate={formatDate}
-            latestLog={latestLog} // for weather API
-            weather={weather} // for weather API
-            weatherMessage={weatherMessage} 
+            latestLog={latestLog}
+            weather={weather}
+            weatherMessage={weatherMessage}
         />
     );
 };

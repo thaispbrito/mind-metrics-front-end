@@ -1,5 +1,6 @@
 // Import chart components
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import styles from './DashboardView.module.css';
 
 const DashboardView = ({
     user,
@@ -13,38 +14,41 @@ const DashboardView = ({
     recommendations,
     formatDate,
     weather,
-    latestLog,
-    weatherMessage
+    weatherMessage,
 }) => {
 
     return (
-        <main>
-            <h1>{user.username}'s Analytics</h1>
+        <main className={styles.page}>
+            <header className={styles.header}>
+                <h1 className={styles.title}>{user.username}'s Analytics</h1>
+            </header>
 
-            {/* Latest Log */}
-            <section>
+            {/* Latest Weather */}
+            <section className={styles.section}>
                 <h2>Current Weather</h2>
                 {weather ? (
-                    <div>
-                        <p>Based on the location from your most recent daily log ({new Date(latestLog.date).toLocaleDateString()}) </p>
-                        <p>Location: {weather.location}</p>
-                        <p>Temperature: {weather.temp}°C</p>
-                        <p><img src={weather.icon} alt={weather.condition}></img> {weather.condition}</p>
-
-                        {weatherMessage && (
-                            <p><em>{weatherMessage}</em></p>
-                        )}
+                    <div className={styles.weatherContainer}>
+                        <div>
+                            <div className={styles.weatherBlock}>
+                                <p className={styles.weatherInfo}>Latest Location: {weather.location}</p>
+                                <p className={styles.weatherInfo}>Temperature: {weather.temp}°C</p>
+                                <p className={styles.weatherInfo}><img src={weather.icon} alt={weather.condition}></img> {weather.condition}</p>
+                                {weatherMessage && (
+                                    <p className={styles.weatherMessage}><em>{weatherMessage}</em></p>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 ) : (
-                    <p>No weather data available.</p>
+                    <p className={styles.info}>No weather data available.</p>
                 )}
             </section>
 
             {/* Set period */}
-            <section>
+            <section className={styles.section}>
                 <label>
                     Show logs from last{' '}
-                    <select value={period} onChange={evt => setPeriod(Number(evt.target.value))}>
+                    <select className={styles.select} value={period} onChange={evt => setPeriod(Number(evt.target.value))}>
                         <option value={3}>3 Days</option>
                         <option value={7}>7 Days</option>
                         <option value={14}>14 Days</option>
@@ -54,19 +58,23 @@ const DashboardView = ({
             </section>
 
             {/* Show averages */}
-            <p>Average Stress: {stressAvg.toFixed(1)}</p>
-            <p>Average Focus: {focusAvg.toFixed(1)}</p>
+            <section className={styles.section}>
+                <div className={styles.averages}>
+                    <p>Average Stress: {stressAvg.toFixed(1)}</p>
+                    <p>Average Focus: {focusAvg.toFixed(1)}</p>
+                </div>
+            </section>
 
             {/* Stress & Focus Chart */}
-            <section>
+            <section className={styles.section}>
                 <h2>Stress & Focus Trends</h2>
                 {chartData.length ? (
-                    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <div className={styles.chartContainer}>
                         <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="date" />
-                                <YAxis domain={[0, 5]} />
+                                <YAxis domain={[1, 5]} label={{ value: "Level", angle: -90, position: "insideLeft", offset: 25 }} />
                                 <Tooltip />
                                 <Legend />
                                 <Line type="monotone" dataKey="Stress" stroke="#FF4C4C" />
@@ -75,67 +83,72 @@ const DashboardView = ({
                         </ResponsiveContainer>
                     </div>
                 ) : (
-                    <p>No logs to display in chart.</p>
+                    <p className={styles.info}>No logs to display in chart.</p>
                 )}
             </section>
 
             {/* Daily Logs */}
-            <section>
+            <section className={styles.section}>
                 <h2>Daily Logs</h2>
-                {selectedLogs.length ? (
-                    selectedLogs.map(log => (
-                        <div key={log._id}>
-                            <p>Date: {formatDate(log.date)}</p>
-                            <p>Mood: {log.mood}</p>
-                            <p>Stress: {log.stressLevel}</p>
-                            <p>Focus: {log.focusLevel}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No logs in the selected period.</p>
-                )}
+                <div className={styles.list}>
+                    {selectedLogs.length ? (
+                        selectedLogs.map(log => (
+                            <div key={log._id} className={styles.logCard}>
+                                <p>Date: {formatDate(log.date)}</p>
+                                <p>Mood: {log.mood}</p>
+                                <p>Stress: {log.stressLevel}</p>
+                                <p>Focus: {log.focusLevel}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.info}>No logs in the selected period.</p>
+                    )}
+
+                </div>
             </section>
 
             {/* Goals */}
-            <section>
+            <section className={styles.section}>
                 <h2>Your Goals</h2>
-                {evaluatedGoals.length ? (
-                    evaluatedGoals.map(goal => (
-                        <div key={goal._id}>
-                            <p><strong>{goal.title}</strong></p>
+                <div className={styles.list}>
+                    {evaluatedGoals.length ? (
+                        evaluatedGoals.map(goal => (
+                            <div key={goal._id} className={styles.goalCard}>
+                                <p><strong>{goal.title}</strong></p>
 
-                            {goal.met === null ? (
-                                <span> Not enough data</span>
-                            ) : goal.met ? (
-                                <span> Met ✅</span>
-                            ) : (
-                                <span> Not met ❌</span>
-                            )}
+                                {goal.met === null ? (
+                                    <span> Not enough data</span>
+                                ) : goal.met ? (
+                                    <span className={styles.goalStatus}> Met ✅</span>
+                                ) : (
+                                    <span className={styles.goalStatus}> Not met ❌</span>
+                                )}
 
-                            {goal.value !== null && (
-                                <p> Avg: {goal.value} / Target: {goal.targetValue} </p>
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <p>No active goals in this period.</p>
-                )}
+                                {goal.value !== null && (
+                                    <p> Avg: {goal.value} / Target: {goal.targetValue} </p>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.goalInfo}>No active goals in this period.</p>
+                    )}
+                </div>
             </section>
 
             {/* Recommendations */}
-            <section>
+            <section className={styles.section}>
                 <h2>Recommendations</h2>
                 {recommendations.length ? (
-                    <ul>
+                    <ul className={styles.recommendations}>
                         {recommendations.map((rec, idx) => (
                             <li key={idx}>{rec}</li>
                         ))}
                     </ul>
                 ) : (
-                    <p>Great job! No major recommendations at the moment.</p>
+                    <p className={styles.info}>Great job! No major recommendations at the moment.</p>
                 )}
             </section>
-        </main>
+        </main >
     );
 };
 

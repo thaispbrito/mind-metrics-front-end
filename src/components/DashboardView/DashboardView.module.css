@@ -1,0 +1,185 @@
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  color: black;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.section {
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--card);
+  color: var(--muted);
+}
+
+.section h2 {
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: black;
+}
+
+.info {
+  margin: 6px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.weatherContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.weatherInfo {
+  margin: 6px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.weatherContainer img {
+  width: 60px;
+  height: 60px;
+}
+
+.weatherMessage {
+  font-size: 15px;
+  align-items: flex-end;
+}
+
+.weatherContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.weatherBlock {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: white;
+  font-size: 14px;
+}
+
+.averages {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+  font-weight: 600;
+}
+
+.chartContainer {
+  max-width: 600px;
+  margin: 0 auto 16px auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--card);
+}
+
+.cardTitle {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.link {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+.recommendations {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.recommendations li {
+  margin-bottom: 6px;
+}
+
+.logCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--card);
+  margin-bottom: 12px;
+}
+
+.goalCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--card);
+  margin-bottom: 12px;
+}
+
+.goalCard p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.goalStatus {
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.goalInfo {
+  margin: 6px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}

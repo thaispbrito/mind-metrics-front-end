@@ -33,9 +33,9 @@ const DailyLogList = ({ dailyLogs }) => {
   const filteredLogs =
     startDate && endDate
       ? sortedLogs.filter((log) => {
-          const logYMD = toYMD(log.date);
-          return logYMD >= startDate && logYMD <= endDate;
-        })
+        const logYMD = toYMD(log.date);
+        return logYMD >= startDate && logYMD <= endDate;
+      })
       : sortedLogs;
 
   // Check if the current user has a log for today

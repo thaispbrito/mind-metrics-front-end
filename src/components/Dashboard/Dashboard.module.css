@@ -1,0 +1,21 @@
+.noDataContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  text-align: center;
+}
+
+.noDataBox {
+  background: white;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.noDataText {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
