@@ -132,7 +132,6 @@ const Dashboard = () => {
     const [goals, setGoals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [period, setPeriod] = useState(3); // dafault period: last 3 days
-    // State variables for weather API
     const [latestLog, setLatestLog] = useState(null);
     const [weather, setWeather] = useState(null);
 
@@ -197,8 +196,6 @@ const Dashboard = () => {
     // Show only the logged-in user's data
     const userLogs = logs.filter((log) => String(log.userId?._id || log.userId) === String(user._id));
     const userGoals = goals.filter((goal) => String(goal.userId?._id || goal.userId) === String(user._id));
-
-    // if (!userLogs.length) return <p>No dashboard data available yet. Start by adding a daily log!</p>;
 
     if (!userLogs.length)
         return (
