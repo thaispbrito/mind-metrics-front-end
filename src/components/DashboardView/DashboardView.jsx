@@ -14,12 +14,11 @@ const DashboardView = ({
     recommendations,
     formatDate,
     weather,
-    latestLog,
-    weatherMessage
+    weatherMessage,
 }) => {
 
     return (
-        <main lassName={styles.page}>
+        <main className={styles.page}>
             <header className={styles.header}>
                 <h1 className={styles.title}>{user.username}'s Analytics</h1>
             </header>
@@ -30,14 +29,14 @@ const DashboardView = ({
                 {weather ? (
                     <div className={styles.weatherContainer}>
                         <div>
-                            <p className={styles.info}>Based on the location from your most recent daily log ({new Date(latestLog.date).toLocaleDateString()}) </p>
-                            <p className={styles.info}>Location: {weather.location}</p>
-                            <p className={styles.info}>Temperature: {weather.temp}°C</p>
-                            <p className={styles.info}><img src={weather.icon} alt={weather.condition}></img> {weather.condition}</p>
-
-                            {weatherMessage && (
-                                <p className={styles.info}><em>{weatherMessage}</em></p>
-                            )}
+                            <div className={styles.weatherBlock}>
+                                <p className={styles.weatherInfo}>Latest Location: {weather.location}</p>
+                                <p className={styles.weatherInfo}>Temperature: {weather.temp}°C</p>
+                                <p className={styles.weatherInfo}><img src={weather.icon} alt={weather.condition}></img> {weather.condition}</p>
+                                {weatherMessage && (
+                                    <p className={styles.weatherMessage}><em>{weatherMessage}</em></p>
+                                )}
+                            </div>
                         </div>
                     </div>
                 ) : (
@@ -75,7 +74,7 @@ const DashboardView = ({
                             <LineChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="date" />
-                                <YAxis domain={[0, 5]} />
+                                <YAxis domain={[1, 5]} label={{ value: "Level", angle: -90, position: "insideLeft", offset: 25 }} />
                                 <Tooltip />
                                 <Legend />
                                 <Line type="monotone" dataKey="Stress" stroke="#FF4C4C" />
@@ -89,46 +88,51 @@ const DashboardView = ({
             </section>
 
             {/* Daily Logs */}
-             <section className={styles.section}>
+            <section className={styles.section}>
                 <h2>Daily Logs</h2>
-                {selectedLogs.length ? (
-                    selectedLogs.map(log => (
-                        <div key={log._id} className={styles.logCard}>
-                            <p>Date: {formatDate(log.date)}</p>
-                            <p>Mood: {log.mood}</p>
-                            <p>Stress: {log.stressLevel}</p>
-                            <p>Focus: {log.focusLevel}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p className={styles.info}>No logs in the selected period.</p>
-                )}
+                <div className={styles.list}>
+                    {selectedLogs.length ? (
+                        selectedLogs.map(log => (
+                            <div key={log._id} className={styles.logCard}>
+                                <p>Date: {formatDate(log.date)}</p>
+                                <p>Mood: {log.mood}</p>
+                                <p>Stress: {log.stressLevel}</p>
+                                <p>Focus: {log.focusLevel}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.info}>No logs in the selected period.</p>
+                    )}
+
+                </div>
             </section>
 
             {/* Goals */}
             <section className={styles.section}>
                 <h2>Your Goals</h2>
-                {evaluatedGoals.length ? (
-                    evaluatedGoals.map(goal => (
-                        <div key={goal._id} className={styles.goalCard}>
-                            <p><strong>{goal.title}</strong></p>
+                <div className={styles.list}>
+                    {evaluatedGoals.length ? (
+                        evaluatedGoals.map(goal => (
+                            <div key={goal._id} className={styles.goalCard}>
+                                <p><strong>{goal.title}</strong></p>
 
-                            {goal.met === null ? (
-                                <span> Not enough data</span>
-                            ) : goal.met ? (
-                                <span> className={styles.goalStatus} Met ✅</span>
-                            ) : (
-                                <span className={styles.goalStatus}> Not met ❌</span>
-                            )}
+                                {goal.met === null ? (
+                                    <span> Not enough data</span>
+                                ) : goal.met ? (
+                                    <span className={styles.goalStatus}> Met ✅</span>
+                                ) : (
+                                    <span className={styles.goalStatus}> Not met ❌</span>
+                                )}
 
-                            {goal.value !== null && (
-                                <p> Avg: {goal.value} / Target: {goal.targetValue} </p>
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <p className={styles.info}>No active goals in this period.</p>
-                )}
+                                {goal.value !== null && (
+                                    <p> Avg: {goal.value} / Target: {goal.targetValue} </p>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.goalInfo}>No active goals in this period.</p>
+                    )}
+                </div>
             </section>
 
             {/* Recommendations */}

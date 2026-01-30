@@ -76,8 +76,10 @@
   padding: 10px 14px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--primary);   /* changed */
-  color: white;                  /* changed */
+  background: var(--primary);
+  /* changed */
+  color: white;
+  /* changed */
   font-weight: 600;
   cursor: pointer;
 }
@@ -86,4 +88,3 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-

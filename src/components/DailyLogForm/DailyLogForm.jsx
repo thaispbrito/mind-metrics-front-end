@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 
 import * as dailyLogService from "../../services/dailyLogService";
 import styles from "./DailyLogForm.module.css";
@@ -488,6 +488,11 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           <button className={styles.buttonPrimary} type="submit">
             Submit
           </button>
+
+          <Link className={styles.buttonPrimary} to="/dailylogs">
+            Cancel
+          </Link>
+
         </div>
       </form>
     </main>

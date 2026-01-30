@@ -2,8 +2,7 @@
   max-width: 960px;
   margin: 0 auto;
   padding: 24px;
-  font-family: sans-serif;
-  color: var(--text);
+  color: black;
 }
 
 .header {
@@ -24,12 +23,14 @@
   border-radius: 12px;
   padding: 16px;
   background: var(--card);
+  color: var(--muted);
 }
 
 .section h2 {
   margin-top: 0;
   font-size: 20px;
   margin-bottom: 12px;
+  color: black;
 }
 
 .info {
@@ -40,13 +41,36 @@
 
 .weatherContainer {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 12px;
 }
 
+.weatherInfo {
+  margin: 6px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
 .weatherContainer img {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
+}
+
+.weatherMessage {
+  font-size: 15px;
+  align-items: flex-end;
+}
+
+.weatherContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.weatherBlock {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .select {
@@ -130,11 +154,6 @@
   margin-bottom: 12px;
 }
 
-.logCard p {
-  margin: 4px 0;
-  font-size: 14px;
-}
-
 .goalCard {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -151,4 +170,16 @@
 .goalStatus {
   font-weight: 600;
   margin-left: 6px;
+}
+
+.goalInfo {
+  margin: 6px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }

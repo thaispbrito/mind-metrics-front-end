@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60vh; /* vertically center */
+  height: 60vh;
   text-align: center;
 }
 

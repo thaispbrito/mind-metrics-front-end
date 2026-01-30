@@ -100,29 +100,29 @@ const weatherCategories = {
 
 const weatherInsights = {
     good: [
-        "The weather looks great today 🌞 Perfect time to get outside!",
-        "Beautiful weather today! Take advantage of it!",
-        "Clear skies ahead. A great day to move your body or relax outdoors."
+        "Bright weather today, mood boost likely! 🌞",
+        "A great day to get some fresh air and recharge!",
+        "Clear skies can help you feel energized and focused!"
     ],
     neutral: [
-        "The weather is calm and mild today.",
-        "A quiet weather day. Perfect for staying focused!",
-        "Not too exciting out there, but great for productivity."
+        "Calm weather—good for steady focus and reflection.",
+        "A quiet day—perfect for mindful moments or indoor tasks.",
+        "Neutral skies—take a moment to check in with yourself."
     ],
     rain: [
-        "Looks rainy today. Maybe a good day for indoor activities!",
-        "Rainy weather. Stay cozy and take care!",
-        "You might want an umbrella today!"
+        "Rainy weather—cozy up and care for yourself.",
+        "A wet day—great for indoor relaxation or small tasks.",
+        "Rain can affect mood—pause, breathe, and stay calm."
     ],
     snow: [
-        "Snowy conditions today ❄️ Stay warm and be careful outside.",
-        "Winter vibes today. Dress warmly!",
-        "Snow is in the air. Take it slow out there."
+        "Snowy conditions—take it slow and stay warm! ❄️",
+        "A wintery day—perfect for cozy routines or reflection!",
+        "Snow can be calming—focus on self-care and safety."
     ],
     extreme: [
-        "Severe weather conditions today ⚠️ Best to stay indoors if possible.",
-        "Weather looks rough. Prioritize safety today.",
-        "Challenging weather conditions. Take extra care!"
+        "Severe weather! Prioritize safety and rest. ⚠️",
+        "Extreme conditions—slow down and check in with yourself.",
+        "Challenging weather—focus on calm and grounding activities."
     ]
 };
 
@@ -316,7 +316,7 @@ const Dashboard = () => {
 
         const normalized = condition.trim().toLowerCase();
 
-        const category = Object.entries(weatherCategories).find(([_, conditions]) =>
+        const category = Object.entries(weatherCategories).find(([, conditions]) =>
             conditions.some(c => c.toLowerCase() === normalized))?.[0];
 
         if (!category) return "Weather conditions are a bit unusual today.";

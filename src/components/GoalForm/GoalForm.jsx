@@ -144,6 +144,7 @@ const GoalForm = (props) => {
                             required
                             type="number"
                             name="targetValue"
+                            min={0}
                             id="targetValue-input"
                             value={formData.targetValue}
                             onChange={handleChange}

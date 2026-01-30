@@ -33,16 +33,14 @@ By combining habit tracking, goal-setting, and personalized insights, MindMetric
 
 ## :framed_picture: Screenshots 
 
-| Description       | Screenshot |
+| <h3>Description</h3>       | <h3>Screenshot<h3> |
 | :----------------:| :------:   |
 | <h3 align="center">Landing Page</h3>     |   <img src="public/images/landing_page.png" width="600">   |
 | <h3 align="center">Home Page</h3>      |   <img src="public/images/home_page.png" width="600">   |
 | <h3 align="center">Add Daily Log</h3>       |  <img src="public/images/dailylog_form.png" width="600">   |
 | <h3 align="center">Daily Log List </h3>    |  <img src="public/images/dailylog_list.png" width="600">   |
 | <h3 align="center">Daily Log Details </h3>   | <img src="public/images/dailylog_details.png" width="600"> |
-| <h3 align="center">Add Goal </h3>   | <img src="public/images/goal_form.png" width="600"> |
 | <h3 align="center">Goal List </h3>   | <img src="public/images/goal_list.png" width="600"> |
-| <h3 align="center">Goal Details </h3>   | <img src="public/images/goal_details.png" width="600"> |
 | <h3 align="center">Dashboard</h3>  | <img src="public/images/dashboard.png" width="600"> |
 
 ## :desktop_computer: Technologies Used 
