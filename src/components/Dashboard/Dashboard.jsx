@@ -3,6 +3,7 @@ import { UserContext } from '../../contexts/UserContext';
 import * as dailyLogService from '../../services/dailyLogService';
 import * as goalService from '../../services/goalService';
 import DashboardView from '../DashboardView/DashboardView';
+import styles from './Dashboard.module.css';
 
 const goalRules = {
     "Sleep Hours": { field: "sleepHours", comparison: "gte" },
@@ -109,7 +110,7 @@ const weatherInsights = {
         "Not too exciting out there, but great for productivity."
     ],
     rain: [
-        "Looks rainy today ☔ Maybe a good day for indoor activities.",
+        "Looks rainy today. Maybe a good day for indoor activities!",
         "Rainy weather. Stay cozy and take care!",
         "You might want an umbrella today!"
     ],
@@ -197,16 +198,23 @@ const Dashboard = () => {
     const userLogs = logs.filter((log) => String(log.userId?._id || log.userId) === String(user._id));
     const userGoals = goals.filter((goal) => String(goal.userId?._id || goal.userId) === String(user._id));
 
-    if (!userLogs.length) return <p>No dashboard data available yet. Start by adding a daily log!</p>;
+    // if (!userLogs.length) return <p>No dashboard data available yet. Start by adding a daily log!</p>;
+
+    if (!userLogs.length)
+        return (
+            <div className={styles.noDataContainer}>
+                <div className={styles.noDataBox}>
+                    <p className={styles.noDataText}>
+                        No dashboard data available yet. <br />Start by adding a daily log!
+                    </p>
+                </div>
+            </div>
+        );
 
     // Calculate seleted logs for period
     const selectedLogs = [...userLogs]
         .sort((a, b) => checkDate(b.date) - checkDate(a.date))
         .slice(0, period);
-
-    if (!selectedLogs.length) {
-        return <p>No daily logs in the selected period.</p>;
-    }
 
     // Compute stress and focus averages
     const stressAvg = selectedLogs.reduce((sum, log) => sum + log.stressLevel, 0) / (selectedLogs.length || 1);
@@ -311,10 +319,8 @@ const Dashboard = () => {
 
         const normalized = condition.trim().toLowerCase();
 
-        const category = Object.entries(weatherCategories)
-            .find(([_, conditions]) =>
-                conditions.some(c => c.toLowerCase() === normalized)
-            )?.[0];
+        const category = Object.entries(weatherCategories).find(([_, conditions]) =>
+            conditions.some(c => c.toLowerCase() === normalized))?.[0];
 
         if (!category) return "Weather conditions are a bit unusual today.";
 
@@ -323,9 +329,7 @@ const Dashboard = () => {
     };
 
     // Weather message
-    const weatherMessage = weather?.condition
-        ? getWeatherInsight(weather.condition)
-        : null;
+    const weatherMessage = weather?.condition ? getWeatherInsight(weather.condition) : null;
 
     return (
         <DashboardView
@@ -339,9 +343,9 @@ const Dashboard = () => {
             evaluatedGoals={evaluatedGoals}
             recommendations={recommendations}
             formatDate={formatDate}
-            latestLog={latestLog} // for weather API
-            weather={weather} // for weather API
-            weatherMessage={weatherMessage} 
+            latestLog={latestLog}
+            weather={weather}
+            weatherMessage={weatherMessage}
         />
     );
 };
