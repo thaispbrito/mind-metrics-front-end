@@ -4,9 +4,7 @@ import styles from "./Landing.module.css";
 const Landing = () => {
   return (
     <main
-      className={styles.page}
-     
-    >
+      className={styles.page}>
       <section className={styles.hero}>
         <header className={styles.header}>
           <h1 className={styles.title}>MindMetrics</h1>

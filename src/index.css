@@ -40,7 +40,6 @@ body {
   min-height: 100%;
 }
 
-
 body {
   padding-top: 72px;
 
@@ -55,8 +54,9 @@ body {
 
 #root {
   min-height: 100vh;
+  --title: #ffffff;
+  --titleGlow: rgba(0, 160, 223, 0.55);
 }
-
 
 main {
   max-width: 1100px;
@@ -64,20 +64,25 @@ main {
   padding: var(--space-4);
 }
 
-/* ✅ Titles: always blue */
 h1,
 h2,
 h3 {
   margin: 0;
+  color: #fff;
   letter-spacing: -0.02em;
-  color: var(--primary);
+  text-shadow: 0 0 14px rgba(0, 160, 223, 0.7);
+}
+
+
+.pageTitle {
+  color: #fff;  
 }
 
 h1 {
-  font-weight: 800;
+  font-weight: 900;
 }
 
-/* Body text */
+
 p {
   margin: 0;
   color: var(--muted);
@@ -112,10 +117,10 @@ button:hover {
   border-color: var(--primary-hover);
 }
 
-/* Inputs inherit font */
 button,
 input,
 select,
 textarea {
   font: inherit;
 }
+

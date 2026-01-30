@@ -25,7 +25,7 @@ const NavBar = () => {
     return (
         <nav className={styles.container}>
             <div className={styles.inner}>
-                
+
                 <Link to="/" className={styles.brand} aria-label="Go to home">
                     <span className={styles.logoDot} />
                     <span className={styles.brandText}>MindMetrics</span>
@@ -33,11 +33,6 @@ const NavBar = () => {
 
                 {user ? (
                     <ul className={styles.menu}>
-                        <li>
-                            <Link className={styles.link} to="/">
-                                Home
-                            </Link>
-                        </li>
 
                         <li>
                             <Link className={styles.link} to="/dailylogs">
@@ -45,7 +40,7 @@ const NavBar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link className={styles.link} to="/">
+                            <Link className={styles.link} to="/dashboard">
                                 Dashboard
                             </Link>
                         </li>
