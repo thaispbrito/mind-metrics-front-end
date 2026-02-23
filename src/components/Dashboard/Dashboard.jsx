@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'; // useEffect is useful when getting information from database
+import { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import * as dailyLogService from '../../services/dailyLogService';
 import * as goalService from '../../services/goalService';
@@ -164,7 +164,6 @@ const Dashboard = () => {
                     },
                 });
                 const data = await res.json();
-                console.log({ data })
                 setLatestLog(data.latestLog);
                 setWeather(data.weather);
             } catch (err) {

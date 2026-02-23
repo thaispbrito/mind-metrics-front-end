@@ -112,21 +112,13 @@ const GoalForm = (props) => {
                             value={formData.targetMetric}
                             onChange={handleChange}
                         >
-                            <option value="" disabled>
-                                Select option
-                            </option>
+                            <option value="" disabled>Select option</option>
                             <option value="Sleep Hours">Sleep Hours</option>
-                            <option value="Exercise Minutes">
-                                Exercise Minutes
-                            </option>
-                            <option value="Meditation Minutes">
-                                Meditation Minutes
-                            </option>
+                            <option value="Exercise Minutes">Exercise Minutes</option>
+                            <option value="Meditation Minutes">Meditation Minutes</option>
                             <option value="Water Cups">Water Cups</option>
                             <option value="Diet Score">Diet Score</option>
-                            <option value="Screen Minutes">
-                                Screen Minutes
-                            </option>
+                            <option value="Screen Hours">Screen Hours</option>
                             <option value="Work Hours">Work Hours</option>
                             <option value="Hobby Minutes">Hobby Minutes</option>
                         </select>
