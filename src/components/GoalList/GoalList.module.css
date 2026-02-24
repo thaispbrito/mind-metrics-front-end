@@ -72,12 +72,6 @@
   gap: 14px;
 }
 
-@media (max-width: 720px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .card {
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -108,3 +102,10 @@
 .empty {
   color: var(--muted);
 }
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -57,16 +57,11 @@ const GoalForm = (props) => {
 
     return (
         <main className={styles.page}>
-            <section className={styles.card}>
-                <header className={styles.header}>
-                    <h1 className={styles.title}>
-                        {goalId ? "Edit Goal" : "New Goal"}
-                    </h1>
-                    <p className={styles.subtitle}>
-                        Fill out the details below and submit.
-                    </p>
-                </header>
+            <h1 className={styles.title}>
+                {goalId ? "Edit Goal" : "New Goal"}
+            </h1>
 
+            <section className={styles.card}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.field}>
                         <label className={styles.label} htmlFor="title-input">
@@ -188,9 +183,7 @@ const GoalForm = (props) => {
                             value={formData.status}
                             onChange={handleChange}
                         >
-                            <option value="" disabled>
-                                Select option
-                            </option>
+                            <option value="" disabled>Select option</option>
                             <option value="Active">Active</option>
                             <option value="Paused">Paused</option>
                             <option value="Completed">Completed</option>

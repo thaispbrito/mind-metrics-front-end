@@ -4,15 +4,12 @@
   padding: 32px 24px;
   display: flex;
   justify-content: center;
-  /* centra la card */
 }
 
 .card {
   width: 100%;
   max-width: 980px;
-  /* más grande */
   padding: 48px 56px;
-  /* más aire */
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--card);
@@ -21,11 +18,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* centra contenido */
   text-align: center;
-  /* texto centrado */
   gap: 18px;
-  /* separación entre bloques */
 }
 
 .title {
@@ -33,13 +27,11 @@
   font-weight: 900;
   letter-spacing: -0.02em;
   font-size: clamp(28px, 3vw, 44px);
-  /* grande y responsive */
   margin: 0;
 }
 
 .subtitle {
   max-width: 720px;
-  /* evita que el texto quede “apretado” */
   font-size: 18px;
   line-height: 1.75;
   color: var(--muted);
@@ -77,12 +69,16 @@
   font-weight: 800;
   text-decoration: none;
   min-width: 220px;
-  /* botones “más grandes” */
+  cursor: pointer;
+
+  box-shadow: 0 14px 26px rgba(0, 160, 223, 0.28);
 }
 
 .btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: var(--on-primary);
   text-decoration: none;
-  filter: brightness(0.95);
 }
 
 .hint {
@@ -93,7 +89,6 @@
   line-height: 1.7;
 }
 
-/* Mobile */
 @media (max-width: 720px) {
   .page {
     padding: 22px 14px;

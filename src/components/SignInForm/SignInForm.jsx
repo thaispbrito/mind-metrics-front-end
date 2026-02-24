@@ -21,12 +21,11 @@ const SignInForm = () => {
   };
 
   const handleSubmit = async (evt) => {
+
     // Stops whatever default behavior that it's attached to
     // In this case, it prevents refreshing the page
     evt.preventDefault();
     try {
-      // This function doesn't exist yet, but we'll create it soon.
-      // It will cause an error right now
       const signedInUser = await signIn(formData);
 
       setUser(signedInUser);
