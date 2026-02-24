@@ -4,81 +4,71 @@ import { UserContext } from "../../contexts/UserContext";
 import styles from "./NavBar.module.css";
 
 const NavBar = () => {
-  // Pass the UserContext object to the useContext hook to access:
-  // - The user state
-  // - The setUser function to update the user state
 
-  // Destructure the object returned by the useContext hook for easy access
-  // to the data we added to the context with familiar names.
+    const { user, setUser } = useContext(UserContext);
 
-  // Get the setUser function from the UserContext
-  const { user, setUser } = useContext(UserContext);
+    const handleSignOut = () => {
+        localStorage.removeItem("token");
+        // Clear the user state
+        setUser(null);
+    };
 
-  // Add the handleSignOut function
-  const handleSignOut = () => {
-    // Clear the token from localStorage
-    localStorage.removeItem("token");
-    // Clear the user state
-    setUser(null);
-  };
+    return (
+        <nav className={styles.container}>
+            <div className={styles.inner}>
+                <div className={styles.leftGroup}>
+                    <Link to="/" className={styles.brand} aria-label="Go to home">
+                        <span className={styles.logoDot} />
+                        <span className={styles.brandText}>MindMetrics</span>
+                    </Link>
 
-  return (
-    <nav className={styles.container}>
-      <div className={styles.inner}>
+                    {user && (
+                        <ul className={styles.menu}>
+                            <li>
+                                <Link className={styles.link} to="/dailylogs">
+                                    Daily Logs
+                                </Link>
+                            </li>
 
-        <Link to="/" className={styles.brand} aria-label="Go to home">
-          <span className={styles.logoDot} />
-          <span className={styles.brandText}>MindMetrics</span>
-        </Link>
+                            <li>
+                                <Link className={styles.link} to="/goals">
+                                    Goals
+                                </Link>
+                            </li>
 
-        {user ? (
-          <ul className={styles.menu}>
+                            <li>
+                                <Link className={styles.link} to="/dashboard">
+                                    Dashboard
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
+                </div>
 
-            <li>
-              <Link className={styles.link} to="/dailylogs">
-                Daily Logs
-              </Link>
-            </li>
-
-            <li>
-              <Link className={styles.link} to="/goals">
-                Goals
-              </Link>
-            </li>
-
-            <li>
-              <Link className={styles.link} to="/dashboard">
-                Dashboard
-              </Link>
-            </li>
-
-            <li className={styles.pushRight}>
-              <Link
-                className={`${styles.btn} ${styles.btnSmall}`}
-                to="/"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </Link>
-            </li>
-          </ul>
-        ) : (
-          <ul className={`${styles.menu} ${styles.menuRight}`}>
-            <li>
-              <Link className={styles.btn} to="/sign-in">
-                Sign In
-              </Link>
-            </li>
-            <li>
-              <Link className={styles.btn} to="/sign-up">
-                Sign Up
-              </Link>
-            </li>
-          </ul>
-        )}
-      </div>
-    </nav>
-  );
+                <div className={styles.rightGroup}>
+                    {user ? (
+                        <Link
+                            className={styles.btn}
+                            to="/"
+                            onClick={handleSignOut}
+                        >
+                            Sign Out
+                        </Link>
+                    ) : (
+                        <>
+                            <Link className={styles.btn} to="/sign-in">
+                                Sign In
+                            </Link>
+                            <Link className={styles.btn} to="/sign-up">
+                                Sign Up
+                            </Link>
+                        </>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default NavBar;
+

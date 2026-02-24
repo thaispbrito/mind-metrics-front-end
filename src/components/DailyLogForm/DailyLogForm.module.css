@@ -1,113 +1,118 @@
 .page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+    margin-top: 30px;
 }
 
 .title {
-  margin-bottom: 16px;
-  color: #111827
+    margin-bottom: 16px;
 }
 
 .form {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 18px;
-}
-
-@media (max-width: 860px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
 }
 
 .row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
 }
 
 .label {
-  width: 160px;
-  /* keeps labels lined up */
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 600;
+    width: 160px;
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 600;
 }
 
 .control {
-  flex: 1;
-  min-width: 180px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: white;
-  font: inherit;
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: white;
+    font: inherit;
 }
 
 .textareaRow {
-  grid-column: 1 / -1;
-  /* full width */
-  align-items: flex-start;
+    grid-column: 1 / -1;
+    align-items: flex-start;
 }
 
 .textarea {
-  min-height: 90px;
-  resize: vertical;
+    min-height: 90px;
+    resize: vertical;
 }
 
 .actions {
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .buttonPrimary {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  text-decoration: none;
-  background: var(--primary);
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    min-width: 90px;
+    justify-content: center;
+    cursor: pointer;
 }
 
-/* Placeholder text for inputs & textarea */
+.buttonPrimary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: var(--on-primary);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
 .control::placeholder {
-  color: #9ca3af;
-  /* soft gray */
+    color: #9ca3af;
 }
 
-/* Default date input text (before selection) */
 .control[type="date"] {
-  color: #9ca3af;
+    color: #9ca3af;
 }
 
 /* When date has a value */
 .control[type="date"]:focus,
 .control[type="date"]:valid {
-  color: #111827;
+    color: #111827;
 }
 
 /* Default select text (Select option) */
 select.control {
-  color: #9ca3af;
+    color: #9ca3af;
 }
 
 /* When a real option is selected */
 select.control:focus,
 select.control:has(option:checked:not([value=""])) {
-  color: #111827;
+    color: #111827;
+}
+
+@media (max-width: 860px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
 }

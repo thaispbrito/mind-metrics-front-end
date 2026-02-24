@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'; // useEffect is useful when getting information from database
+import { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import * as dailyLogService from '../../services/dailyLogService';
 import * as goalService from '../../services/goalService';
@@ -164,7 +164,6 @@ const Dashboard = () => {
                     },
                 });
                 const data = await res.json();
-                console.log({ data })
                 setLatestLog(data.latestLog);
                 setWeather(data.weather);
             } catch (err) {
@@ -249,7 +248,7 @@ const Dashboard = () => {
         }
     });
 
-    // Mood-based insights
+    // Moods
     const moodCounts = selectedLogs.reduce(
         (acc, log) => {
             if (moodCategories.positive.includes(log.mood)) acc.positive += 1;
@@ -258,12 +257,15 @@ const Dashboard = () => {
         },
         { positive: 0, negative: 0 }
     );
+
     const totalMoods = selectedLogs.length;
+
     const moodPercents = {
         positive: (moodCounts.positive / totalMoods) * 100,
         negative: (moodCounts.negative / totalMoods) * 100,
     };
 
+    // Mood-based insights
     const moodInsights = [];
     if (moodPercents.negative > 50) {
         moodInsights.push("Your moods have been mostly negative recently. Take a moment to review your daily habits to see what might improve your mood!");
@@ -308,7 +310,6 @@ const Dashboard = () => {
         Focus: log.focusLevel,
     }))
         .reverse(); // chronological order
-
 
     // Weather Insights
     const getWeatherInsight = (condition) => {

@@ -57,16 +57,11 @@ const GoalForm = (props) => {
 
     return (
         <main className={styles.page}>
-            <section className={styles.card}>
-                <header className={styles.header}>
-                    <h1 className={styles.title}>
-                        {goalId ? "Edit Goal" : "New Goal"}
-                    </h1>
-                    <p className={styles.subtitle}>
-                        Fill out the details below and submit.
-                    </p>
-                </header>
+            <h1 className={styles.title}>
+                {goalId ? "Edit Goal" : "New Goal"}
+            </h1>
 
+            <section className={styles.card}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.field}>
                         <label className={styles.label} htmlFor="title-input">
@@ -112,21 +107,13 @@ const GoalForm = (props) => {
                             value={formData.targetMetric}
                             onChange={handleChange}
                         >
-                            <option value="" disabled>
-                                Select option
-                            </option>
+                            <option value="" disabled>Select option</option>
                             <option value="Sleep Hours">Sleep Hours</option>
-                            <option value="Exercise Minutes">
-                                Exercise Minutes
-                            </option>
-                            <option value="Meditation Minutes">
-                                Meditation Minutes
-                            </option>
+                            <option value="Exercise Minutes">Exercise Minutes</option>
+                            <option value="Meditation Minutes">Meditation Minutes</option>
                             <option value="Water Cups">Water Cups</option>
                             <option value="Diet Score">Diet Score</option>
-                            <option value="Screen Minutes">
-                                Screen Minutes
-                            </option>
+                            <option value="Screen Hours">Screen Hours</option>
                             <option value="Work Hours">Work Hours</option>
                             <option value="Hobby Minutes">Hobby Minutes</option>
                         </select>
@@ -196,9 +183,7 @@ const GoalForm = (props) => {
                             value={formData.status}
                             onChange={handleChange}
                         >
-                            <option value="" disabled>
-                                Select option
-                            </option>
+                            <option value="" disabled>Select option</option>
                             <option value="Active">Active</option>
                             <option value="Paused">Paused</option>
                             <option value="Completed">Completed</option>

@@ -47,11 +47,11 @@ const Home = ({ dailyLogs }) => {
                             className={styles.btn}
                             to={`/dailylogs/${todayLog._id}`}
                         >
-                            View Today’s Daily Log
+                            View Today's Daily Log
                         </Link>
                     ) : (
                         <Link className={styles.btn} to="/dailylogs/new">
-                            Add Today’s Daily Log
+                            Add Today's Daily Log
                         </Link>
                     )}
 

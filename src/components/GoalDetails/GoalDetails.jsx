@@ -58,22 +58,22 @@ const GoalDetails = (props) => {
 
                 <section className={styles.section}>
                     <div className={styles.row}>
-                        <div className={styles.label}>Metric</div>
+                        <div className={styles.label}>Metric:</div>
                         <div className={styles.value}>{goal.targetMetric}</div>
                     </div>
 
                     <div className={styles.row}>
-                        <div className={styles.label}>Target</div>
+                        <div className={styles.label}>Target:</div>
                         <div className={styles.value}>{goal.targetValue}</div>
                     </div>
                     <div className={styles.row}>
-                        <div className={styles.label}>Start</div>
+                        <div className={styles.label}>Start:</div>
                         <div className={styles.value}>
                             {new Date(goal.startDate).toLocaleDateString()}
                         </div>
                     </div>
                     <div className={styles.row}>
-                        <div className={styles.label}>End</div>
+                        <div className={styles.label}>End:</div>
                         <div className={styles.value}>
                             {new Date(goal.endDate).toLocaleDateString()}
                         </div>
