@@ -56,12 +56,12 @@ const NavBar = () => {
                         </Link>
                     ) : (
                         <>
-                        <Link className={styles.btn} to="/sign-in">
-                            Sign In
-                        </Link>
-                        <Link className={styles.btn} to="/sign-up">
-                            Sign Up
-                        </Link>
+                            <Link className={styles.btn} to="/sign-in">
+                                Sign In
+                            </Link>
+                            <Link className={styles.btn} to="/sign-up">
+                                Sign Up
+                            </Link>
                         </>
                     )}
                 </div>

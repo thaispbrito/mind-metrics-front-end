@@ -11,11 +11,9 @@ const getUserFromToken = () => {
 };
 
 function UserProvider({ children }) {
-     // call getUserFromToken() to get our initial user state
+    // call getUserFromToken() to get our initial user state
     const [user, setUser] = useState(getUserFromToken());
 
-    // This is the user state and the setUser function that will update it!
-    // This variable name isn't special; it's just convention to use `value`.
     const value = { user, setUser };
 
     return (
@@ -27,7 +25,4 @@ function UserProvider({ children }) {
     );
 };
 
-// When components need to use the value of the user context, they will need
-// access to the UserContext object to know which context to access.
-// Therefore, we export it here.
 export { UserProvider, UserContext };

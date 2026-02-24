@@ -345,7 +345,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
                             <option value="" disabled>
                                 Select option
                             </option>
-                            
+
                             {screenWorkOptions.map((n) => (
                                 <option key={n} value={n}>
                                     {n}

@@ -100,7 +100,7 @@ a:hover {
 }
 
 
-button{
+button {
     border-radius: 10px;
     border: 1px solid var(--primary);
     background: var(--primary);
@@ -113,9 +113,6 @@ button{
 button:hover {
     background: var(--primary-hover);
     border-color: var(--primary-hover);
-
-    /* transform: translateY(-2px); */
-
 }
 
 button,

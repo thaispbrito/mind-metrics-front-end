@@ -19,201 +19,201 @@ import * as goalService from './services/goalService';
 
 const App = () => {
 
-  const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
-  const [dailyLogs, setDailyLogs] = useState([]);
-  const [logsLoading, setLogsLoading] = useState(false);
-  const [logsError, setLogsError] = useState("");
+    const [dailyLogs, setDailyLogs] = useState([]);
+    const [logsLoading, setLogsLoading] = useState(false);
+    const [logsError, setLogsError] = useState("");
 
-  const [goals, setGoals] = useState([]);
+    const [goals, setGoals] = useState([]);
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  // Fetch daily logs and goals whenever a user is logged in
-  useEffect(() => {
+    // Fetch daily logs and goals whenever a user is logged in
+    useEffect(() => {
 
-    const fetchDailyLogs = async () => {
-      // If logged out, clear logs state
-      if (!user) {
-        setDailyLogs([]);
-        setLogsLoading(false);
-        setLogsError("");
-        return;
-      }
+        const fetchDailyLogs = async () => {
+            // If logged out, clear logs state
+            if (!user) {
+                setDailyLogs([]);
+                setLogsLoading(false);
+                setLogsError("");
+                return;
+            }
 
-      try {
-        setLogsLoading(true);
-        setLogsError("");
+            try {
+                setLogsLoading(true);
+                setLogsError("");
 
-        const data = await dailyLogService.index();
+                const data = await dailyLogService.index();
 
-        // Backend returns an array (per your controller)
-        const normalized = Array.isArray(data) ? data : data?.dailyLogs || [];
-        setDailyLogs(normalized);
-      } catch (err) {
-        console.error("Failed to fetch daily logs:", err);
-        setDailyLogs([]);
-        setLogsError(err?.message || "Failed to fetch daily logs.");
-      } finally {
-        setLogsLoading(false);
-      }
+                // Backend returns an array (per your controller)
+                const normalized = Array.isArray(data) ? data : data?.dailyLogs || [];
+                setDailyLogs(normalized);
+            } catch (err) {
+                console.error("Failed to fetch daily logs:", err);
+                setDailyLogs([]);
+                setLogsError(err?.message || "Failed to fetch daily logs.");
+            } finally {
+                setLogsLoading(false);
+            }
+        };
+
+        const fetchGoals = async () => {
+            if (!user) return;
+            const data = await goalService.index();
+            setGoals(data);
+        };
+
+        fetchDailyLogs();
+        fetchGoals();
+    }, [user]);
+
+    // CREATE daily log
+    const handleAddDailyLog = async (dailyLogFormData) => {
+        try {
+            setLogsError("");
+
+            // Convert the date string from form to UTC Date
+            const payload = { ...dailyLogFormData };
+            if (payload.date) {
+                const [year, month, day] = payload.date.split("-");
+                payload.date = new Date(year, month - 1, day);
+            }
+
+            const created = await dailyLogService.create(payload);
+
+            // Put newest on top
+            setDailyLogs((prev) => [created, ...prev]);
+
+            navigate("/dailylogs");
+        } catch (err) {
+            console.error("Failed to create daily log:", err);
+            setLogsError(err?.message || "Failed to create daily log.");
+        }
     };
 
-    const fetchGoals = async () => {
-      if (!user) return;
-      const data = await goalService.index();
-      setGoals(data);
+    // UPDATE daily log
+    const handleUpdateDailyLog = async (dailyLogId, dailyLogFormData) => {
+        try {
+            setLogsError("");
+
+            // Convert the date string from form to UTC Date
+            const payload = { ...dailyLogFormData };
+            if (payload.date) {
+                const [year, month, day] = payload.date.split("-");
+                payload.date = new Date(year, month - 1, day);
+            }
+
+            const updated = await dailyLogService.updateDailyLog(
+                dailyLogId,
+                payload
+            );
+
+            setDailyLogs((prev) =>
+                prev.map((log) => (log._id === dailyLogId ? updated : log))
+            );
+
+            navigate(`/dailylogs/${dailyLogId}`);
+        } catch (err) {
+            console.error("Failed to update daily log:", err);
+            setLogsError(err?.message || "Failed to update daily log.");
+        }
     };
 
-    fetchDailyLogs();
-    fetchGoals();
-  }, [user]);
+    // DELETE daily log
+    const handleDeleteDailyLog = async (dailyLogId) => {
+        try {
+            setLogsError("");
 
-  // CREATE daily log
-  const handleAddDailyLog = async (dailyLogFormData) => {
-    try {
-      setLogsError("");
+            await dailyLogService.deleteDailyLog(dailyLogId);
 
-      // Convert the date string from form to UTC Date
-      const payload = { ...dailyLogFormData };
-      if (payload.date) {
-        const [year, month, day] = payload.date.split("-");
-        payload.date = new Date(year, month - 1, day);
-      }
+            setDailyLogs((prev) => prev.filter((log) => log._id !== dailyLogId));
 
-      const created = await dailyLogService.create(payload);
+            navigate("/dailylogs");
+        } catch (err) {
+            console.error("Failed to delete daily log:", err);
+            setLogsError(err?.message || "Failed to delete daily log.");
+        }
+    };
 
-      // Put newest on top
-      setDailyLogs((prev) => [created, ...prev]);
+    // CREATE goal
+    const handleAddGoal = async (goalFormData) => {
 
-      navigate("/dailylogs");
-    } catch (err) {
-      console.error("Failed to create daily log:", err);
-      setLogsError(err?.message || "Failed to create daily log.");
-    }
-  };
+        // Convert startDate and endDate strings to Date objects
+        const payload = { ...goalFormData };
+        if (payload.startDate) {
+            const [year, month, day] = payload.startDate.split("-");
+            payload.startDate = new Date(year, month - 1, day);
+        }
+        if (payload.endDate) {
+            const [year, month, day] = payload.endDate.split("-");
+            payload.endDate = new Date(year, month - 1, day);
+        }
 
-  // UPDATE daily log
-  const handleUpdateDailyLog = async (dailyLogId, dailyLogFormData) => {
-    try {
-      setLogsError("");
+        const newGoal = await goalService.create(payload);
+        setGoals([newGoal, ...goals]);
+        navigate('/goals');
+    };
 
-      // Convert the date string from form to UTC Date
-      const payload = { ...dailyLogFormData };
-      if (payload.date) {
-        const [year, month, day] = payload.date.split("-");
-        payload.date = new Date(year, month - 1, day);
-      }
+    // DELETE goal
+    const handleDeleteGoal = async (goalId) => {
+        await goalService.deleteGoal(goalId);
+        setGoals(goals.filter((g) => g._id !== goalId));
+        navigate('/goals');
+    };
 
-      const updated = await dailyLogService.updateDailyLog(
-        dailyLogId,
-        payload
-      );
+    // UPDATE goal
+    const handleUpdateGoal = async (goalId, goalFormData) => {
 
-      setDailyLogs((prev) =>
-        prev.map((log) => (log._id === dailyLogId ? updated : log))
-      );
+        // Convert startDate and endDate strings to Date objects
+        const payload = { ...goalFormData };
+        if (payload.startDate) {
+            const [year, month, day] = payload.startDate.split("-");
+            payload.startDate = new Date(year, month - 1, day);
+        }
+        if (payload.endDate) {
+            const [year, month, day] = payload.endDate.split("-");
+            payload.endDate = new Date(year, month - 1, day);
+        }
 
-      navigate(`/dailylogs/${dailyLogId}`);
-    } catch (err) {
-      console.error("Failed to update daily log:", err);
-      setLogsError(err?.message || "Failed to update daily log.");
-    }
-  };
+        const updatedGoal = await goalService.updateGoal(goalId, payload);
+        setGoals(goals.map((g) => (g._id === goalId ? updatedGoal : g)));
+        navigate(`/goals/${goalId}`);
+    };
 
-  // DELETE daily log
-  const handleDeleteDailyLog = async (dailyLogId) => {
-    try {
-      setLogsError("");
+    return (
+        <>
+            <NavBar />
+            <Routes>
+                <Route path='/' element={user ? <Home dailyLogs={dailyLogs} /> : <Landing />} />
+                {user ? (
+                    <>
+                        {/* Protected routes (available only to signed-in users) */}
 
-      await dailyLogService.deleteDailyLog(dailyLogId);
-
-      setDailyLogs((prev) => prev.filter((log) => log._id !== dailyLogId));
-
-      navigate("/dailylogs");
-    } catch (err) {
-      console.error("Failed to delete daily log:", err);
-      setLogsError(err?.message || "Failed to delete daily log.");
-    }
-  };
-
-  // CREATE goal
-  const handleAddGoal = async (goalFormData) => {
-
-    // Convert startDate and endDate strings to Date objects
-    const payload = { ...goalFormData };
-    if (payload.startDate) {
-      const [year, month, day] = payload.startDate.split("-");
-      payload.startDate = new Date(year, month - 1, day);
-    }
-    if (payload.endDate) {
-      const [year, month, day] = payload.endDate.split("-");
-      payload.endDate = new Date(year, month - 1, day);
-    }
-
-    const newGoal = await goalService.create(payload);
-    setGoals([newGoal, ...goals]);
-    navigate('/goals');
-  };
-
-  // DELETE goal
-  const handleDeleteGoal = async (goalId) => {
-    await goalService.deleteGoal(goalId);
-    setGoals(goals.filter((g) => g._id !== goalId));
-    navigate('/goals');
-  };
-
-  // UPDATE goal
-  const handleUpdateGoal = async (goalId, goalFormData) => {
-
-    // Convert startDate and endDate strings to Date objects
-    const payload = { ...goalFormData };
-    if (payload.startDate) {
-      const [year, month, day] = payload.startDate.split("-");
-      payload.startDate = new Date(year, month - 1, day);
-    }
-    if (payload.endDate) {
-      const [year, month, day] = payload.endDate.split("-");
-      payload.endDate = new Date(year, month - 1, day);
-    }
-
-    const updatedGoal = await goalService.updateGoal(goalId, payload);
-    setGoals(goals.map((g) => (g._id === goalId ? updatedGoal : g)));
-    navigate(`/goals/${goalId}`);
-  };
-
-  return (
-    <>
-      <NavBar />
-      <Routes>
-        <Route path='/' element={user ? <Home dailyLogs={dailyLogs} /> : <Landing />} />
-        {user ? (
-          <>
-            {/* Protected routes (available only to signed-in users) */}
-
-            {/* Goal routes */}
-            <Route path="/goals" element={<GoalList goals={goals} />} />
-            <Route path="/goals/new" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
-            <Route path="/goals/:goalId" element={<GoalDetails handleDeleteGoal={handleDeleteGoal} />} />
-            <Route path="/goals/:goalId/edit" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
-            {/* Daily log routes */}
-            <Route path="/dailylogs" element={<DailyLogList dailyLogs={dailyLogs} loading={logsLoading} error={logsError} />} />
-            <Route path="/dailylogs/new" element={<DailyLogForm handleAddDailyLog={handleAddDailyLog} handleUpdateDailyLog={handleUpdateDailyLog} />} />
-            <Route path="/dailylogs/:dailyLogId" element={<DailyLogDetails handleDeleteDailyLog={handleDeleteDailyLog} />} />
-            <Route path="/dailylogs/:dailyLogId/edit" element={<DailyLogForm handleAddDailyLog={handleAddDailyLog} handleUpdateDailyLog={handleUpdateDailyLog} />} />
-            {/* Dashboard route */}
-            <Route path="/dashboard" element={<Dashboard />} />
-          </>
-        ) : (
-          <>
-            {/* Non-user routes (Auth) */}
-            <Route path='/sign-up' element={<SignUpForm />} />
-            <Route path="/sign-in" element={<SignInForm />} />
-          </>
-        )}
-      </Routes>
-    </>
-  );
+                        {/* Goal routes */}
+                        <Route path="/goals" element={<GoalList goals={goals} />} />
+                        <Route path="/goals/new" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
+                        <Route path="/goals/:goalId" element={<GoalDetails handleDeleteGoal={handleDeleteGoal} />} />
+                        <Route path="/goals/:goalId/edit" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
+                        {/* Daily log routes */}
+                        <Route path="/dailylogs" element={<DailyLogList dailyLogs={dailyLogs} loading={logsLoading} error={logsError} />} />
+                        <Route path="/dailylogs/new" element={<DailyLogForm handleAddDailyLog={handleAddDailyLog} handleUpdateDailyLog={handleUpdateDailyLog} />} />
+                        <Route path="/dailylogs/:dailyLogId" element={<DailyLogDetails handleDeleteDailyLog={handleDeleteDailyLog} />} />
+                        <Route path="/dailylogs/:dailyLogId/edit" element={<DailyLogForm handleAddDailyLog={handleAddDailyLog} handleUpdateDailyLog={handleUpdateDailyLog} />} />
+                        {/* Dashboard route */}
+                        <Route path="/dashboard" element={<Dashboard />} />
+                    </>
+                ) : (
+                    <>
+                        {/* Non-user routes (Auth) */}
+                        <Route path='/sign-up' element={<SignUpForm />} />
+                        <Route path="/sign-in" element={<SignInForm />} />
+                    </>
+                )}
+            </Routes>
+        </>
+    );
 };
 
 export default App;
