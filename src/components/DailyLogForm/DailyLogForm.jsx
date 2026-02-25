@@ -123,11 +123,10 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
 
     return (
         <main className={styles.page}>
-            <h1 className={styles.title}>
-                {dailyLogId ? "Edit Daily Log" : "New Daily Log"}
-            </h1>
-
             <form className={styles.form} onSubmit={handleSubmit}>
+                <h1 className={styles.title}>
+                    {dailyLogId ? "Edit Daily Log" : "New Daily Log"}
+                </h1>
                 <section className={styles.grid}>
                     <div className={styles.row}>
                         <label className={styles.label} htmlFor="date-input">

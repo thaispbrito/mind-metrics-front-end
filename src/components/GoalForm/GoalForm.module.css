@@ -6,9 +6,9 @@
 }
 
 .title {
-    max-width: 560px;
-    margin: 0 auto 16px;
     text-align: left;
+    color: var(--text);
+    padding-bottom: 14px;   
 }
 
 .card {

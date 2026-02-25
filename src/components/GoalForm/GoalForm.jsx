@@ -57,12 +57,11 @@ const GoalForm = (props) => {
 
     return (
         <main className={styles.page}>
-            <h1 className={styles.title}>
-                {goalId ? "Edit Goal" : "New Goal"}
-            </h1>
-
             <section className={styles.card}>
                 <form className={styles.form} onSubmit={handleSubmit}>
+                    <h1 className={styles.title}>
+                        {goalId ? "Edit Goal" : "New Goal"}
+                    </h1>
                     <div className={styles.field}>
                         <label className={styles.label} htmlFor="title-input">
                             Title
