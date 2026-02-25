@@ -1,6 +1,5 @@
 import { useParams, Link } from "react-router";
 import { useState, useEffect, useContext } from "react";
-
 import * as dailyLogService from "../../services/dailyLogService";
 import usaStates from "../../constants/usaStates";
 import { UserContext } from "../../contexts/UserContext";
@@ -29,54 +28,54 @@ const DailyLogDetails = ({ handleDeleteDailyLog }) => {
         <main className={styles.page}>
             <section className={styles.card}>
                 <header className={styles.header}>
-                <h1 className={styles.title}>{dailyLog.mood}</h1>
-                <p className={styles.date}>
-                    <strong>Tracking Date:</strong>{" "}
-                    {new Date(dailyLog.date).toLocaleDateString()}
-                </p>
+                    <h1 className={styles.title}>{dailyLog.mood}</h1>
+                    <p className={styles.date}>
+                        <strong>Tracking Date:</strong>{" "}
+                        {new Date(dailyLog.date).toLocaleDateString()}
+                    </p>
                 </header>
 
                 <div className={styles.list}>
-                <p className={styles.item}>
-                    <strong>Stress Level:</strong> {dailyLog.stressLevel}
-                </p>
-                <p className={styles.item}>
-                    <strong>Focus Level:</strong> {dailyLog.focusLevel}
-                </p>
-                <p className={styles.item}>
-                    <strong>Sleep Hours:</strong> {dailyLog.sleepHours}
-                </p>
-                <p className={styles.item}>
-                    <strong>Exercise Minutes:</strong> {dailyLog.exerciseMin}
-                </p>
-                <p className={styles.item}>
-                    <strong>Meditation Minutes:</strong> {dailyLog.meditationMin}
-                </p>
-                <p className={styles.item}>
-                    <strong>Water Cups:</strong> {dailyLog.waterCups}
-                </p>
-                <p className={styles.item}>
-                    <strong>Diet Score:</strong> {dailyLog.dietScore}
-                </p>
-                <p className={styles.item}>
-                    <strong>Screen Hours:</strong> {dailyLog.screenHours}
-                </p>
-                <p className={styles.item}>
-                    <strong>Work Hours:</strong> {dailyLog.workHours}
-                </p>
-                <p className={styles.item}>
-                    <strong>Hobby Minutes:</strong> {dailyLog.hobbyMin}
-                </p>
-                <p className={styles.item}>
-                    <strong>Location:</strong> {dailyLog.location}
-                </p>
-                <p className={styles.item}>
-                    <strong>State:</strong>{" "}
-                    {`${usaStates.find(s => s.abbr === dailyLog.state).name} - ${dailyLog.state}`}
-                </p>
-                <p className={`${styles.item} ${styles.notes}`}>
-                    <strong>Notes:</strong> {dailyLog.notes}
-                </p>
+                    <p className={styles.item}>
+                        <strong>Stress Level:</strong> {dailyLog.stressLevel}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Focus Level:</strong> {dailyLog.focusLevel}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Sleep Hours:</strong> {dailyLog.sleepHours}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Exercise Minutes:</strong> {dailyLog.exerciseMin}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Meditation Minutes:</strong> {dailyLog.meditationMin}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Water Cups:</strong> {dailyLog.waterCups}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Diet Score:</strong> {dailyLog.dietScore}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Screen Hours:</strong> {dailyLog.screenHours}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Work Hours:</strong> {dailyLog.workHours}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Hobby Minutes:</strong> {dailyLog.hobbyMin}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>Location:</strong> {dailyLog.location}
+                    </p>
+                    <p className={styles.item}>
+                        <strong>State:</strong>{" "}
+                        {`${usaStates.find(s => s.abbr === dailyLog.state).name} - ${dailyLog.state}`}
+                    </p>
+                    <p className={`${styles.item} ${styles.notes}`}>
+                        <strong>Notes:</strong> {dailyLog.notes}
+                    </p>
                 </div>
 
                 {ownerId === user?._id && (

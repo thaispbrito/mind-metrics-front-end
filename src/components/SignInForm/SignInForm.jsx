@@ -1,8 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router';
-
 import { signIn } from '../../services/authService';
-
 import { UserContext } from '../../contexts/UserContext';
 import styles from "./SignInForm.module.css";
 
@@ -25,7 +23,7 @@ const SignInForm = () => {
         // Stops whatever default behavior that it's attached to
         // In this case, it prevents refreshing the page
         evt.preventDefault();
-        
+
         try {
             const signedInUser = await signIn(formData);
 

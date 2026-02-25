@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-
 import * as dailyLogService from "../../services/dailyLogService";
 import usaStates from "../../constants/usaStates";
 import styles from "./DailyLogForm.module.css";

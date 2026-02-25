@@ -77,4 +77,4 @@ By combining habit tracking, goal-setting, and personalized insights, MindMetric
 * Add additional charts to enhance data visualization on the dashboard.
 * Integrate a location API to dynamically populate the city field in the daily log form.
 * Improve dashboard recommendations and insights by integrating an AI-powered API.
-* Enhance responsive design to better support different screen sizes and devices.◊
+* Enhance responsive design to better support different screen sizes and devices.

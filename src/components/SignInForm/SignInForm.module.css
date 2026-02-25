@@ -38,7 +38,7 @@
 }
 
 .label {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--muted);
 }
 
@@ -48,7 +48,7 @@
     border: 1px solid var(--border);
     background: white;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .actions {
